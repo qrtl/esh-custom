@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_picking_internal_search_z1" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search.incoming</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="picking_type_code"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="action_picking_tree_incoming" model="ir.actions.act_window">
+            <field name="name">Receipts</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'search_default_picking_type_code': 'incoming',
+                    'default_picking_type_code': 'incoming',
+                    'contact_display': 'partner_address',
+            }
+            </field>
+            <field name="search_view_id" ref="view_picking_internal_search_z1"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a stock operation. 
+              </p><p>
+                Most operations are prepared automatically by Odoo according
+                to your preconfigured logistics rules, but you can also record
+                manual stock movements.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="action_picking_tree_incoming"
+            id="menu_action_picking_tree_incoming"
+            parent="stock.menu_stock_warehouse_mgmt" sequence="5" />
+
+
+        <record id="action_picking_tree_internal" model="ir.actions.act_window">
+            <field name="name">Internal Transfers</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'search_default_picking_type_code': 'internal',
+                    'default_picking_type_code': 'internal',
+                    'contact_display': 'partner_address',
+            }
+            </field>
+            <field name="search_view_id" ref="view_picking_internal_search_z1"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a stock operation. 
+              </p><p>
+                Most operations are prepared automatically by Odoo according
+                to your preconfigured logistics rules, but you can also record
+                manual stock movements.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="action_picking_tree_internal"
+            id="menu_action_picking_tree_internal"
+            parent="stock.menu_stock_warehouse_mgmt" sequence="10" />
+
+
+        <record id="action_picking_tree_outgoing" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'search_default_picking_type_code': 'outgoing',
+                    'default_picking_type_code': 'outgoing',
+                    'contact_display': 'partner_address',
+            }
+            </field>
+            <field name="search_view_id" ref="view_picking_internal_search_z1"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a stock operation. 
+              </p><p>
+                Most operations are prepared automatically by Odoo according
+                to your preconfigured logistics rules, but you can also record
+                manual stock movements.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="action_picking_tree_outgoing"
+            id="menu_action_picking_tree_outgoing"
+            parent="stock.menu_stock_warehouse_mgmt" sequence="15" />
+
+    </data>
+</openerp>
