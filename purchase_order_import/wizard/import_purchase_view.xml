@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_purchase_import_wizard" model="ir.ui.view">
+            <field name="name">purchase.import.form</field>
+            <field name="model">import.purchase</field>
+            <field name="arch" type="xml">
+                <form string="Import">
+                    <separator string="Import Purchase Orders"/>
+                    <label string="This wizard will create purchase orders using purchase order .xlsx file. It will also validate purchase order, validate invoice and pay invoice."/>
+                    <group>
+                        <group>
+                            <field name="input_file" filename="datas_fname" />
+                            <field name="datas_fname" invisible="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="supplier_invoice_journal_id" domain="[('type', '=', 'purchase')]"/>
+                        </group>
+                        <group>
+                            <field name="supplier_payment_journal_id" domain="[('type', 'in', ('cash', 'bank'))]"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="import_purchase_data" string="Import" type="object" class="oe_highlight"/> or 
+                        <button special="cancel" string="Cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_import_purchase_order" model="ir.actions.act_window">
+            <field name="name">Import Purchase Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">import.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_purchase_import_wizard"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="purchase_import_data_menu" name="Purchase Order" parent= "base_import_log.import_data_main_menu" groups="purchase.group_purchase_user"/>
+                       
+        <menuitem id="purchase_import_wiz_menu" name="Import Purchase Order" action="action_import_purchase_order"
+                   parent= "purchase_import_data_menu" />
+
+    </data>
+</openerp>
