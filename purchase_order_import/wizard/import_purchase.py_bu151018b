@@ -39,43 +39,6 @@ class import_purchase(models.TransientModel):
     supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id)
     supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id)
     
-    @api.model
-    def _get_partner_dict(self, partner_value, partner_dict, error_line_vals):
-        if partner_value not in partner_dict.keys():
-            partner = self.env['res.partner'].search([('name', '=', partner_value)])
-            if not partner:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Partner: ' + partner_value + ' Not Found! \n'
-                error_line_vals['error'] = True
-            else:
-                partner_dict[partner_value] = partner.id
-
-    @api.model
-    def _get_product_dict(self, product_id_value, product_dict, error_line_vals):
-        if product_id_value not in product_dict.keys():
-            product = self.env['product.product'].search([('default_code', '=', product_id_value)])
-            if not product:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Product: ' + product_id_value + ' Not Found! \n'
-                error_line_vals['error'] = True
-            else:
-                product_dict[product_id_value] = product.id
-
-    @api.model
-    def _get_pricelist_dict(self, pricelist_value, pricelist_dict, error_line_vals):
-        if pricelist_value not in pricelist_dict.keys():
-            pricelist = self.env['product.pricelist'].search([('name', '=', pricelist_value)])
-            if not pricelist:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Pricelist: ' + pricelist_value + ' Not Found! \n'
-                error_line_vals['error'] = True
-            else:
-                pricelist_dict[pricelist_value] = pricelist.id
-
-    @api.model
-    def _get_invoice_method(self, invoice_method_value, invoice_method_dict, error_line_vals):
-        if not invoice_method_value in invoice_method_dict:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Invoice Method: ' + invoice_method_value + ' Not Found! \n'
-            error_line_vals['error'] = True
-        return invoice_method_dict[invoice_method_value]
-    
     @api.multi
     def import_purchase_data(self):
         invoice_method_dict = {'Based on Purchase Order lines' : 'manual',
@@ -131,121 +94,142 @@ class import_purchase(models.TransientModel):
                 picking_type_id = sheet.row_values(0).index('picking_type_id')
                 invoice_method_name = sheet.row_values(0).index('invoice_method')
                 notes = sheet.row_values(0).index('notes')
-
-                for row_no in range(1, rows):  # skip the first row
-                    order_group_value = sheet.row_values(row_no)[order_group]
-                    error_line_vals = {'error_name' : '', 'error': False}
-                    partner_value = sheet.row_values(row_no)[partner_id]
-                    if partner_value:
-                        self._get_partner_dict(partner_value, partner_dict, error_line_vals)
-                    
-                    product_id_value = sheet.row_values(row_no)[product_id]
-                    if product_id_value:
-                        self._get_product_dict(product_id_value, product_dict, error_line_vals)
-                    
-                    pricelist_value = sheet.row_values(row_no)[pricelist_id]
-                    if pricelist_value:
-                        self._get_pricelist_dict(pricelist_value, pricelist_dict, error_line_vals)
-                    
-                    invoice_method_value = sheet.row_values(row_no)[invoice_method_name]
-                    if invoice_method_value:
-                        invoice_method = self._get_invoice_method(invoice_method_value, invoice_method_dict, error_line_vals)
-                    
-                    picking_type_value = sheet.row_values(row_no)[picking_type_id]
-                    if picking_type_value:
-                        if picking_type_value not in picking_dict:
-                            picking_type = self.env['stock.picking.type'].search([('name', '=', picking_type_value)])
-                            current_pick = False
-                            for pick in picking_type:
-                                if pick.warehouse_id.company_id.id == self.env.user.company_id.id:
-                                    current_pick = pick
-                            picking_dict[picking_type_value] = current_pick
-                    
-                    taxes = []
-                    tax_from_chunk = sheet.row_values(row_no)[taxes_id]
-                    if tax_from_chunk:
-                        tax_name_list = tax_from_chunk.split(',')
-                        for tax_name in tax_name_list:
-                            tax = self.env['account.tax'].search([('name', '=', tax_name)])
-                            if not tax:
-                                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Tax: ' + tax_name + ' Not Found! \n'
+                for row_no in range(rows):
+                    if row_no > 0:
+                        order_group_value = sheet.row_values(row_no)[order_group]
+                        error_line_vals = {'error_name' : '', 'error': False}
+                        partner_value = sheet.row_values(row_no)[partner_id]
+                        if partner_value:
+                            if partner_value not in partner_dict.keys():
+                                partner = self.env['res.partner'].search([('name', '=', partner_value)])
+                                if not partner:
+                                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Partner: ' + partner_value + ' Not Found! \n'
+                                    error_line_vals['error'] = True
+                                else:
+                                    partner_dict[partner_value] = partner.id
+                        
+                        product_id_value = sheet.row_values(row_no)[product_id]
+                        if product_id_value not in product_dict.keys():
+                            product = self.env['product.product'].search([('default_code', '=', product_id_value)])
+                            if not product:
+                                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Product: ' + product_id_value + ' Not Found! \n'
                                 error_line_vals['error'] = True
                             else:
-                                taxes.append(tax.id)
-                    qty = float(sheet.row_values(row_no)[product_qty])
-                    if qty < 0:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Quantity not less then zero! \n'
-                        error_line_vals['error'] = True
-                    
-                    price_unit_value = float(sheet.row_values(row_no)[price_unit])
-                    if price_unit_value < 0:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
-                        error_line_vals['error'] = True
-                    
-                    if not error_log_id and error_line_vals['error']:
-                        error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
-                                                                     'import_user_id' : self.env.user.id,
-                                                                    'import_date': datetime.now(),
-                                                                    'state': 'failed',
-                                                                    'model_id': model.id}).id
-                        error_line_id = self.env['error.log.line'].create({
-                                                    'row_no' : row_no + 1,
-                                                    'order_group' : order_group_value,
-                                                    'error_name': error_line_vals['error_name'],
-                                                    'log_id' : error_log_id
-                                                })
-                    elif error_line_vals['error']:
-                        error_line_id = self.env['error.log.line'].create({
-                                                    'row_no' : row_no + 1,
-                                                    'order_group' : order_group_value,
-                                                    'error_name': error_line_vals['error_name'],
-                                                    'log_id' : error_log_id
-                                                })
-                    
-                    order = sheet.row_values(row_no)[order_group]
-                    if not error_log_id:
-                        name = sheet.row_values(row_no)[line_name]
+                                product_dict[product_id_value] = product.id
                         
-                        product_data = self.env['purchase.order.line'].onchange_product_id(pricelist_dict[pricelist_value], product_dict[product_id_value], qty, False, partner_dict[partner_value],
-                                                                            False, False, False, False, price_unit, 'draft')
-                        if not name:
-                            name = product_data['value']['name']
-                        planned_date = sheet.row_values(row_no)[date_planned]
-                        if not planned_date:
-                            planned_date = product_data['value']['date_planned']
-                        state = 'draft'
-                        if order not in order_item_dict.keys():
-                            order_item_dict[order] = [{
-                                                'name' : name,
-                                                'product_id' : product_dict[product_id_value],
-                                                'product_qty' : qty,
-                                                'date_planned' : planned_date,
-                                                'price_unit' : price_unit_value,
-                                                'state' : state,
-                                                'taxes_id': taxes,
-                                                }]
-                        else:
-                            order_item_dict[order].append({
-                                                'name' : name,
-                                                'product_id' : product_dict[product_id_value],
-                                                'product_qty' : qty,
-                                                'date_planned' : planned_date,
-                                                'price_unit' : price_unit_value,
-                                                'state' : state,
-                                                'taxes_id':taxes,
-                                                })
+                        pricelist_value = sheet.row_values(row_no)[pricelist_id]
+                        if pricelist_value:
+                            if pricelist_value not in pricelist_dict.keys():
+                                pricelist = self.env['product.pricelist'].search([('name', '=', pricelist_value)])
+                                if not pricelist:
+                                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Pricelist: ' + pricelist_value + ' Not Found! \n'
+                                    error_line_vals['error'] = True
+                                else:
+                                    pricelist_dict[pricelist_value] = pricelist.id
                         
-                        if order_group_value not in order_dict:
-                            pricelist_data = self.env['purchase.order'].onchange_pricelist(pricelist_dict[pricelist_value])
-                            order_dict[order_group_value] = {
-                                            'partner_id' : partner_dict[partner_value],
-                                            'pricelist_id' : pricelist_dict[pricelist_value],
-                                            'location_id': picking_dict[picking_type_value].default_location_dest_id and picking_dict[picking_type_value].default_location_dest_id.id,
-                                            'invoice_method': invoice_method,
-                                            'currency_id' : pricelist_data['value']['currency_id'],
-                                            'date_order' : planned_date,
-                                            'notes': sheet.row_values(row_no)[notes]
-                                            }
+                        invoice_method_value = sheet.row_values(row_no)[invoice_method_name]
+                        
+                        if not invoice_method_value in invoice_method_dict:
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Invoice Method: ' + invoice_method_value + ' Not Found! \n'
+                            error_line_vals['error'] = True
+                            
+                        invoice_method = invoice_method_dict[invoice_method_value]
+                        
+                        picking_type_value = sheet.row_values(row_no)[picking_type_id]
+                        if picking_type_value:
+                            if picking_type_value not in picking_dict:
+                                picking_type = self.env['stock.picking.type'].search([('name', '=', picking_type_value)])
+                                current_pick = False
+                                for pick in picking_type:
+                                    if pick.warehouse_id.company_id.id == self.env.user.company_id.id:
+                                        current_pick = pick
+                                picking_dict[picking_type_value] = current_pick
+                        
+                        taxes = []
+                        tax_from_chunk = sheet.row_values(row_no)[taxes_id]
+                        if tax_from_chunk:
+                            tax_name_list = tax_from_chunk.split(',')
+                            for tax_name in tax_name_list:
+                                tax = self.env['account.tax'].search([('name', '=', tax_name)])
+                                if not tax:
+                                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Tax: ' + tax_name + ' Not Found! \n'
+                                    error_line_vals['error'] = True
+                                else:
+                                    taxes.append(tax.id)
+                        qty = float(sheet.row_values(row_no)[product_qty])
+                        if qty < 0:
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Quantity not less then zero! \n'
+                            error_line_vals['error'] = True
+                        
+                        price_unit_value = float(sheet.row_values(row_no)[price_unit])
+                        if price_unit_value < 0:
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
+                            error_line_vals['error'] = True
+                        
+                        if not error_log_id and error_line_vals['error']:
+                            error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
+                                                                         'import_user_id' : self.env.user.id,
+                                                                        'import_date': datetime.now(),
+                                                                        'state': 'failed',
+                                                                        'model_id': model.id}).id
+                            error_line_id = self.env['error.log.line'].create({
+                                                        'row_no' : row_no + 1,
+                                                        'order_group' : order_group_value,
+                                                        'error_name': error_line_vals['error_name'],
+                                                        'log_id' : error_log_id
+                                                    })
+                        elif error_line_vals['error']:
+                            error_line_id = self.env['error.log.line'].create({
+                                                        'row_no' : row_no + 1,
+                                                        'order_group' : order_group_value,
+                                                        'error_name': error_line_vals['error_name'],
+                                                        'log_id' : error_log_id
+                                                    })
+                        
+                        order = sheet.row_values(row_no)[order_group]
+                        if not error_log_id:
+                            name = sheet.row_values(row_no)[line_name]
+                            
+                            product_data = self.env['purchase.order.line'].onchange_product_id(pricelist_dict[pricelist_value], product_dict[product_id_value], qty, False, partner_dict[partner_value],
+                                                                                False, False, False, False, price_unit, 'draft')
+                            if not name:
+                                name = product_data['value']['name']
+                            planned_date = sheet.row_values(row_no)[date_planned]
+                            if not planned_date:
+                                planned_date = product_data['value']['date_planned']
+                            state = 'draft'
+                            if order not in order_item_dict.keys():
+                                order_item_dict[order] = [{
+                                                    'name' : name,
+                                                    'product_id' : product_dict[product_id_value],
+                                                    'product_qty' : qty,
+                                                    'date_planned' : planned_date,
+                                                    'price_unit' : price_unit_value,
+                                                    'state' : state,
+                                                    'taxes_id': taxes,
+                                                    }]
+                            else:
+                                order_item_dict[order].append({
+                                                    'name' : name,
+                                                    'product_id' : product_dict[product_id_value],
+                                                    'product_qty' : qty,
+                                                    'date_planned' : planned_date,
+                                                    'price_unit' : price_unit_value,
+                                                    'state' : state,
+                                                    'taxes_id':taxes,
+                                                    })
+                            
+                            if order_group_value not in order_dict:
+                                pricelist_data = self.env['purchase.order'].onchange_pricelist(pricelist_dict[pricelist_value])
+                                order_dict[order_group_value] = {
+                                                'partner_id' : partner_dict[partner_value],
+                                                'pricelist_id' : pricelist_dict[pricelist_value],
+                                                'location_id': picking_dict[picking_type_value].default_location_dest_id and picking_dict[picking_type_value].default_location_dest_id.id,
+                                                'invoice_method': invoice_method,
+                                                'currency_id' : pricelist_data['value']['currency_id'],
+                                                'date_order' : planned_date,
+                                                'notes': sheet.row_values(row_no)[notes]
+                                                }
                                 
                 if not error_log_id:
                     error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,

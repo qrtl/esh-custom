@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
 #    OpenERP, Open Source Management Solution
 #    Copyright (c) Rooms For (Hong Kong) Limited T/A OSCG. All Rights Reserved.
 #
@@ -16,9 +14,9 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+
 from openerp import models, fields, api, _
+
 
 class error_log_lines(models.Model):
     _name = 'error.log.line'
@@ -27,6 +25,7 @@ class error_log_lines(models.Model):
     row_no = fields.Integer('Row Number')
     order_group = fields.Char('Order Group')
     log_id = fields.Many2one('error.log', string='Log')
+
     
 class error_log(models.Model):
     _name = 'error.log'
