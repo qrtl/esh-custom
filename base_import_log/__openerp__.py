@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
 #    OpenERP, Open Source Management Solution
 #    Copyright (c) Rooms For (Hong Kong) Limited T/A OSCG. All Rights Reserved.
 #
@@ -16,18 +14,17 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+
 {
-    'name': 'Import Error Log',
-    'version': '1.0',
+    'name': 'Base Import Log',
+    'version': '8.0.1.0',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
     'depends': ['base'],
-    'website': 'www.roomsfor.hk',
+    'website': 'www.openerp-asia.net',
     'description': """ 
-Base Error Log.
+Adds a screen to show log records for data imports.
     """,
-    'summary':""" Base Error Log""",
+    'summary': "",
     'data': [
             'security/import_group.xml',
             'security/ir.model.access.csv',
