@@ -311,19 +311,23 @@ class import_purchase(models.TransientModel):
                                 invoice.journal_id = self.supplier_invoice_journal_id.id
                                 if invoice.state == 'draft':
                                     invoice.signal_workflow('invoice_open')
+                                    if self.supplier_payment_journal_id.currency.id != invoice.company_id.currency_id.id:
+                                        currency_id_voucher = self.supplier_payment_journal_id.currency.id
+                                    else:
+                                        currency_id_voucher = invoice.currency_id.id
+                                    partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
+                                                                                                    self.supplier_payment_journal_id.id,
+                                                                                                    invoice.amount_total,
+                                                                                                    currency_id_voucher,
+                                                                                                    'payment',
+                                                                                                    invoice.date_invoice)
                                     journal_data = self.env['account.voucher'].onchange_journal_voucher(line_ids= False,
                                                                                                         tax_id=False,
                                                                                                         price=0.0, 
                                                                                                         partner_id=invoice.partner_id.id,
-                                                                                                        journal_id=invoice.journal_id.id,
+                                                                                            journal_id=self.supplier_payment_journal_id.id,
                                                                                                         ttype='payment',
                                                                                                         company_id=invoice.company_id.id)
-                                    partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
-                                                                                                    invoice.journal_id.id,
-                                                                                                    invoice.amount_total,
-                                                                                                    invoice.currency_id.id,
-                                                                                                    'payment',
-                                                                                                    invoice.date_invoice)
                                     line_dr_list = []
                                     for line in partner_data['value']['line_dr_ids']:
                                         moveline = self.env['account.move.line'].browse(line['move_line_id'])
@@ -336,7 +340,7 @@ class import_purchase(models.TransientModel):
                                         'partner_id' : invoice.partner_id.id,
                                         'company_id' : invoice.company_id.id,
                                         'journal_id' : self.supplier_payment_journal_id.id,
-                                        'currency_id': partner_data['value']['currency_id'],
+                                        'currency_id': currency_id_voucher,
                                         'line_ids' : False,
                                         'line_cr_ids' : False,
                                         'line_dr_ids' : line_dr_list,
@@ -346,6 +350,8 @@ class import_purchase(models.TransientModel):
                                         'date' : invoice.date_invoice,
                                         'type': 'payment',
                                         'amount' : invoice.amount_total,
+                                        'payment_rate': journal_data['value']['payment_rate'],
+                                        'payment_rate_currency_id': journal_data['value']['payment_rate_currency_id']
                                     }
                                     voucher_id = self.env['account.voucher'].create(voucher_vals)
                                     voucher_id.signal_workflow('proforma_voucher')
