@@ -328,7 +328,9 @@ class import_purchase(models.TransientModel):
                                     for line in partner_data['value']['line_dr_ids']:
                                         moveline = self.env['account.move.line'].browse(line['move_line_id'])
                                         if invoice.id == moveline.invoice.id:
+                                            line['amount'] = invoice.amount_total
                                             line_dr_list.append((0, 0, line))
+                                            break #IF one line found then get out of loop since invoice and payment has one to one relation.
                                     voucher_vals = {
                                         'name': '/',
                                         'partner_id' : invoice.partner_id.id,
