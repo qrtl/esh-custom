@@ -316,7 +316,7 @@ class import_purchase(models.TransientModel):
                                                                                                         price=0.0, 
                                                                                                         partner_id=invoice.partner_id.id,
                                                                                                         journal_id=invoice.journal_id.id,
-                                                                                                        ttype=False,
+                                                                                                        ttype='payment',
                                                                                                         company_id=invoice.company_id.id)
                                     partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
                                                                                                     invoice.journal_id.id,
