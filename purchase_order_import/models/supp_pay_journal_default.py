@@ -15,22 +15,22 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-{
-    'name': 'Purchase Data Import',
-    'category': 'Purchase Management',
-    'version': '8.0.1.0',
-    'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['purchase', 'account_voucher', 'base_import_log'],
-    'website': 'www.openerp-asia.net',
-    'description': """ 
-Import purchase data.
-    """,
-    'summary':""" Import purchase data""",
-    'data': [
-            'views/supp_pay_journal_default.xml',
-            'views/purchase_view.xml',
-            'wizard/import_purchase_view.xml',
-             ],
-    'installable': True,
-}
+from openerp import models, api, _, fields
+
+
+class SuppPayJournalDefault(models.Model):
+    _name = 'supp.pay.journal.default'
+
+    @api.onchange('currency_id')
+    def _onchange_currency_id(self):
+#         self.supplier_payment_journal_id = self.env['account.journal'].search([('type','=','bank'),('currency','=',self.currency_id.id)], limit=1) or False
+        self.journal_id = False
+
+    currency_id = fields.Many2one('res.currency', required=True, string='Currency')
+    journal_id = fields.Many2one('account.journal', required=True, string='Supplier Payment Journal')
+
+    _sql_constraints = [
+        ('name_currency_uniq', 'unique(currency_id)', 'Currencies must be unique !'),
+    ]
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
