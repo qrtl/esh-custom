@@ -82,5 +82,7 @@
         <menuitem id="import_error_log_menu" name="Data Import Log" parent="import_data_main_menu" sequence="1"/>
         <menuitem id="error_log_sub_menu" name="Import Log" parent="import_error_log_menu"
                 action="error_log_action" sequence="1"/>
+        <menuitem id="import_data_menu" name="Data Import" parent="import_data_main_menu"/>
+        <menuitem id="import_data_config" name="Configuration" parent="import_data_main_menu"/>
     </data>
 </openerp>
