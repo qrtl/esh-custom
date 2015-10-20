@@ -1,25 +1,42 @@
-購買データインポート
+Purchase Data Import
 ====================
 
-(Introduction)
+This module provides following functions:
 
-本モジュールで実現される主な機能は次の通り:
+* Imports purchase data of designated format from .xlsx file, and creates following transactions:
+ * Purchase order
+ * Supplier invoice
+ * Supplier payment
+ 
+This module depends on `base_import_log` module.
+ 
 
+Installation
+============
+
+* Install `python-xlrd` in the Odoo server before installing the module.
+
+
+Configuration
+=============
+
+* User should belong to 'Data Import' group.  Adjust the user access right settings as necessary.
+* Select default journals (invoice journal and payment journal) in "Purchase Import Defaults" screen.  The values are used to propose journals in "Purchase Data Import" wizard.
+
+
+Usage
+=====
+
+Go to `Import > Import > Import Purchase Order` to import purchase data.
+
+Go to `Import > Data Import Log > Import Log` to find the import history / error log.
+
+
+Import Logic
+------------
+
+* `Group` values should be used to separate purchase orders.
+* Products are identified based on Internal Reference (`default_code`).
+* Purchase order currency is determined based on the selected Pricelist
+* If `Line Description` is left blank, let the system propose the description according to the standard logic.
 * 
-
-インストール方法
-================
-
-* サーバに`python-xlrd`をインストール
-
-
-設定
-====
-
-* User should belong to 'Data Import' group
-
-
-使い方
-======
-
-The module should achieve following operation scenarios:
