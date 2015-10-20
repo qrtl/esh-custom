@@ -5,7 +5,7 @@
             <field name="name">error.log.form</field>
             <field name="model">error.log</field>
             <field name="arch" type="xml">
-                 <form string="Error Log" create="false" edit="false">
+                 <form string="Error Logs" create="false" edit="false">
                      <header>
                          <field name="state" widget="statusbar"/>
                      </header>
@@ -19,14 +19,15 @@
                             <group>
                                 <field name="import_user_id"/>
                                 <field name="model_id"/>
+                                <field name="model_name" invisible="1"/>
                             </group>
                         </group>
                         <notebook string='Logs'>
                             <page string='Error Logs'>
                                 <field name="log_line_ids">
                                     <tree string='Error Logs'>
+                                        <field name="order_group"/>                                        
                                         <field name="row_no"/> 
-                                        <field name="order_group"/>
                                         <field name="error_name"/> 
                                     </tree>
                                 </field>
@@ -41,7 +42,7 @@
             <field name="name">error.log.tree</field>
             <field name="model">error.log</field>
             <field name="arch" type="xml">
-                 <tree string="Error Log" create="false" edit="false" colors="red:state == 'failed';" default_order="import_date desc">
+                 <tree string="Error Logs" create="false" edit="false" colors="red:state == 'failed';" default_order="import_date desc">
                     <field name="import_date"/> 
                     <field name="import_user_id"/>
                     <field name="model_id"/>
@@ -72,7 +73,7 @@
         </record>
         
         <record id='error_log_action' model='ir.actions.act_window'>
-            <field name='name'>Import Log</field>
+            <field name='name'>Import Logs</field>
             <field name='res_model'>error.log</field>
             <field name='view_type'>form</field>
             <field name='view_mode'>tree,form</field>

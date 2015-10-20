@@ -17,6 +17,10 @@
 
 from openerp import models, api, _, fields
 
+class error_log(models.Model):
+    _inherit = 'error.log'
+
+    purchase_order_ids = fields.One2many('purchase.order', 'error_log_id', string='Related Purchase Orders')
 
 class res_company(models.Model):
     _inherit = 'res.company'
@@ -30,5 +34,6 @@ class purchase_order(models.Model):
 
     imported_order = fields.Boolean('Imported Order?', readonly=True)
     order_ref = fields.Char('Order Reference', readonly=True)
+    error_log_id = fields.Many2one(relation='error.log', string='Import Log', readonly=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

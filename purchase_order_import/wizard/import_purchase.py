@@ -34,7 +34,7 @@ class import_purchase(models.TransientModel):
     def _get_supplier_payment_journal_id(self):
         return self.env.user.company_id.supplier_payment_journal_id and self.env.user.company_id.supplier_payment_journal_id.id or False
     
-    input_file = fields.Binary('Purchase Order File (.xlsx format)', required=True)
+    input_file = fields.Binary('Purchase Order File (.xlsx Format)', required=True)
     datas_fname = fields.Char('File Path')
     supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id)
     supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id)
@@ -125,7 +125,7 @@ class import_purchase(models.TransientModel):
         return error_log_id
 
     @api.model
-    def _get_order_id(self, order_data, item):
+    def _get_order_id(self, order_data, item, error_log_id):
         order_vals = {
             'partner_id' : order_data['partner_id'],
             'pricelist_id' : order_data['pricelist_id'],
@@ -136,6 +136,7 @@ class import_purchase(models.TransientModel):
             'currency_id': order_data['currency_id'],
             'date_order' : order_data['date_order'],
             'notes': order_data['notes'],
+            'error_log_id': error_log_id,
         }
         return self.env['purchase.order'].create(order_vals)
 
@@ -299,7 +300,7 @@ class import_purchase(models.TransientModel):
                                                                  'model_id': model.id}).id
                                                                     
                     for item in order_item_dict:
-                        order_id = self._get_order_id(order_dict[item], item)
+                        order_id = self._get_order_id(order_dict[item], item, error_log_id)
                         
                         for po_line in order_item_dict[item]:
                             orderline_id = self._get_orderline_id(po_line, order_id)
@@ -311,13 +312,18 @@ class import_purchase(models.TransientModel):
                                 invoice.journal_id = self.supplier_invoice_journal_id.id
                                 if invoice.state == 'draft':
                                     invoice.signal_workflow('invoice_open')
-                                    if self.supplier_payment_journal_id.currency.id != invoice.company_id.currency_id.id:
+                                    if self.supplier_payment_journal_id.currency and self.supplier_payment_journal_id.currency.id != invoice.currency_id.id:
                                         currency_id_voucher = self.supplier_payment_journal_id.currency.id
+                                        voucher_amount = invoice.currency_id.compute(invoice.amount_total, self.supplier_payment_journal_id.currency)
+                                    elif not self.supplier_payment_journal_id.currency and invoice.currency_id.id != invoice.company_id.currency_id.id:
+                                        currency_id_voucher = invoice.company_id.currency_id.id
+                                        voucher_amount = invoice.currency_id.compute(invoice.amount_total, invoice.company_id.currency_id)
                                     else:
                                         currency_id_voucher = invoice.currency_id.id
+                                        voucher_amount = invoice.amount_total
                                     partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
                                                                                                     self.supplier_payment_journal_id.id,
-                                                                                                    invoice.amount_total,
+                                                                                                    voucher_amount,
                                                                                                     currency_id_voucher,
                                                                                                     'payment',
                                                                                                     invoice.date_invoice)
@@ -332,7 +338,7 @@ class import_purchase(models.TransientModel):
                                     for line in partner_data['value']['line_dr_ids']:
                                         moveline = self.env['account.move.line'].browse(line['move_line_id'])
                                         if invoice.id == moveline.invoice.id:
-                                            line['amount'] = invoice.amount_total
+                                            line['amount'] = voucher_amount
                                             line_dr_list.append((0, 0, line))
                                             break #IF one line found then get out of loop since invoice and payment has one to one relation.
                                     voucher_vals = {
@@ -349,7 +355,7 @@ class import_purchase(models.TransientModel):
                                         'state': 'draft',
                                         'date' : invoice.date_invoice,
                                         'type': 'payment',
-                                        'amount' : invoice.amount_total,
+                                        'amount' : voucher_amount,
                                         'payment_rate': journal_data['value']['payment_rate'],
                                         'payment_rate_currency_id': journal_data['value']['payment_rate_currency_id']
                                     }
