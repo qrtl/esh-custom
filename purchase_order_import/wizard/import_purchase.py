@@ -196,22 +196,22 @@ class import_purchase(models.TransientModel):
                         'datas': self.input_file,
                         'datas_fname': self.datas_fname})
             
-            for sheet_name in lines.sheet_names(): 
-                sheet = lines.sheet_by_name(sheet_name) 
+            for sheet_name in lines.sheet_names():
+                sheet = lines.sheet_by_name(sheet_name)
                 rows = sheet.nrows
                 columns = sheet.ncols
                 order_group = sheet.row_values(0).index('Group')
-                date_planned = sheet.row_values(0).index('order_line/date_planned')
-                product_id = sheet.row_values(0).index('order_line/product_id')
-                line_name = sheet.row_values(0).index('order_line/name')
-                price_unit = sheet.row_values(0).index('order_line/price_unit')
-                product_qty = sheet.row_values(0).index('order_line/product_qty')
-                taxes_id = sheet.row_values(0).index('order_line/taxes_id')
-                partner_id = sheet.row_values(0).index('partner_id')
-                pricelist_id = sheet.row_values(0).index('pricelist_id')
+                date_planned = sheet.row_values(0).index('Line Planned Date')
+                product_id = sheet.row_values(0).index('Line Product')
+                line_name = sheet.row_values(0).index('Line Description')
+                price_unit = sheet.row_values(0).index('Line Unit Price')
+                product_qty = sheet.row_values(0).index('Line Qty')
+                taxes_id = sheet.row_values(0).index('Line Tax')
+                partner_id = sheet.row_values(0).index('Supplier')
+                pricelist_id = sheet.row_values(0).index('Pricelist')
                 warehouse_id = sheet.row_values(0).index('Warehouse')
-                invoice_method_name = sheet.row_values(0).index('invoice_method')
-                notes = sheet.row_values(0).index('notes')
+                invoice_method_name = sheet.row_values(0).index('Invoice Method')
+                notes = sheet.row_values(0).index('Notes')
 
                 for row_no in range(1, rows):  # skip the first row
                     order_group_value = sheet.row_values(row_no)[order_group]
