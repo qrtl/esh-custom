@@ -18,19 +18,20 @@
 from openerp import models, api, _, fields
 
 
-class SuppPayJournalDefault(models.Model):
-    _name = 'supp.pay.journal.default'
+class PurhcaseImportDefault(models.Model):
+    _name = 'purchase.import.default'
 
-    @api.onchange('currency_id')
-    def _onchange_currency_id(self):
-#         self.supplier_payment_journal_id = self.env['account.journal'].search([('type','=','bank'),('currency','=',self.currency_id.id)], limit=1) or False
-        self.journal_id = False
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        self.supplier_invoice_journal_id = False
+        self.supplier_payment_journal_id = False
 
-    currency_id = fields.Many2one('res.currency', required=True, string='Currency')
-    journal_id = fields.Many2one('account.journal', required=True, string='Supplier Payment Journal')
+    company_id = fields.Many2one('res.company', required=True, string='Company')
+    supplier_invoice_journal_id = fields.Many2one('account.journal', required=True, string='Supplier Invoice Journal')
+    supplier_payment_journal_id = fields.Many2one('account.journal', required=True, string='Supplier Payment Journal')
 
     _sql_constraints = [
-        ('name_currency_uniq', 'unique(currency_id)', 'Currencies must be unique !'),
+        ('name_company_uniq', 'unique(company_id)', 'Companies must be unique !'),
     ]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

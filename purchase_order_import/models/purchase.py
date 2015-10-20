@@ -22,12 +22,6 @@ class error_log(models.Model):
 
     purchase_order_ids = fields.One2many('purchase.order', 'error_log_id', string='Related Purchase Orders')
 
-class res_company(models.Model):
-    _inherit = 'res.company'
-
-    supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal')
-    supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal')
-
 
 class purchase_order(models.Model):
     _inherit = 'purchase.order'

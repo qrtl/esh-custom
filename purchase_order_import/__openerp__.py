@@ -27,7 +27,7 @@ Import purchase data.
     """,
     'summary':""" Import purchase data""",
     'data': [
-            'views/supp_pay_journal_default.xml',
+            'views/purchase_import_default.xml',
             'views/purchase_view.xml',
             'wizard/import_purchase_view.xml',
              ],

@@ -1,26 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-        
-        <record model="ir.ui.view" id="company_purchase_order_import_config">
-            <field name="name">company.purchase.order.import.config</field>
-            <field name="model">res.company</field>
-            <field name="inherit_id" ref="base.view_company_form"></field>
-            <field name="arch" type="xml">
-                <xpath expr="//page[@string='Report Configuration']" position="after">
-                    <page string='Purchase Import'>
-                        <group>
-                            <group>
-                                <field name="supplier_invoice_journal_id" domain="[('type', '=', 'purchase')]"/> 
-                                <field name="supplier_payment_journal_id" domain="[('type', 'in', ('cash', 'bank'))]"/>
-                            </group>
-                            <group/>
-                        </group>
-                    </page>
-                </xpath>
-            </field>
-         </record>
-        
+    <data>        
         <record model="ir.ui.view" id="purchase_order_inherit_for_import">
             <field name="name">purchase.order.inherit.for.import</field>
             <field name="model">purchase.order</field>

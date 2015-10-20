@@ -26,20 +26,25 @@ from openerp.exceptions import except_orm, Warning, RedirectWarning
 class import_purchase(models.TransientModel):
     _name = 'import.purchase'
     
-    @api.multi
+    @api.model
     def _get_supplier_invoice_journal_id(self):
-        return self.env.user.company_id.supplier_invoice_journal_id and self.env.user.company_id.supplier_invoice_journal_id.id or False
-    
-    @api.multi
+        default_rec = self.env['purchase.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
+        if default_rec:
+            return default_rec.supplier_invoice_journal_id
+
+    @api.model
     def _get_supplier_payment_journal_id(self):
-        return self.env.user.company_id.supplier_payment_journal_id and self.env.user.company_id.supplier_payment_journal_id.id or False
-    
+        default_rec = self.env['purchase.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
+        if default_rec:
+            return default_rec.supplier_payment_journal_id
+
+
     input_file = fields.Binary('Purchase Order File (.xlsx Format)', required=True)
     datas_fname = fields.Char('File Path')
     supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id)
     supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id)
 
-    
+
     @api.model
     def _get_partner_dict(self, partner_value, partner_dict, error_line_vals):
         if partner_value not in partner_dict.keys():
@@ -331,7 +336,7 @@ class import_purchase(models.TransientModel):
                                                                                                         tax_id=False,
                                                                                                         price=0.0, 
                                                                                                         partner_id=invoice.partner_id.id,
-                                                                                            journal_id=self.supplier_payment_journal_id.id,
+                                                                                                        journal_id=self.supplier_payment_journal_id.id,
                                                                                                         ttype='payment',
                                                                                                         company_id=invoice.company_id.id)
                                     line_dr_list = []
