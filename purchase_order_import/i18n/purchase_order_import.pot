@@ -1,0 +1,205 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* purchase_order_import
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-21 01:03+0000\n"
+"PO-Revision-Date: 2015-10-21 01:03+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_order_import
+#: view:import.purchase:purchase_order_import.view_purchase_import_wizard
+msgid "Cancel"
+msgstr ""
+
+#. module: purchase_order_import
+#: model:ir.model,name:purchase_order_import.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: purchase_order_import
+#: sql_constraint:purchase.import.default:0
+msgid "Companies must be unique !"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:purchase.import.default,company_id:0
+msgid "Company"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,create_uid:0
+#: field:purchase.import.default,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,create_date:0
+#: field:purchase.import.default,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:purchase.import.default:purchase_order_import.purchase_import_default_tree
+msgid "Default Tree"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:error.log:purchase_order_import.import_error_log_form_purchase
+msgid "Error Logs"
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:166
+#: code:addons/purchase_order_import/wizard/import_purchase.py:169
+#, python-format
+msgid "Error!"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,datas_fname:0
+msgid "File Path"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,id:0
+#: field:purchase.import.default,id:0
+msgid "ID"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:import.purchase:purchase_order_import.view_purchase_import_wizard
+msgid "Import"
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:175
+#: code:addons/purchase_order_import/wizard/import_purchase.py:177
+#: code:addons/purchase_order_import/wizard/import_purchase.py:180
+#: code:addons/purchase_order_import/wizard/import_purchase.py:182
+#, python-format
+msgid "Import Error!"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:purchase.order,error_log_id:0
+msgid "Import Log"
+msgstr ""
+
+#. module: purchase_order_import
+#: model:ir.actions.act_window,name:purchase_order_import.action_import_purchase_order
+#: model:ir.ui.menu,name:purchase_order_import.purchase_import_wiz_menu
+msgid "Import Purchase Order"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:import.purchase:purchase_order_import.view_purchase_import_wizard
+msgid "Import Purchase Orders"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:purchase.order,imported_order:0
+msgid "Imported Order?"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,write_uid:0
+#: field:purchase.import.default,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,write_date:0
+#: field:purchase.import.default,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:purchase.order,order_ref:0
+msgid "Order Reference"
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:182
+#, python-format
+msgid "Please check your xlsx file, it seems it contains more than one sheet."
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:166
+#, python-format
+msgid "Please select Supplier Invoice Journal."
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:169
+#, python-format
+msgid "Please select Supplier Payment Journal."
+msgstr ""
+
+#. module: purchase_order_import
+#: model:ir.actions.act_window,name:purchase_order_import.purchase_import_default_action
+msgid "Purchase Import Defaults"
+msgstr ""
+
+#. module: purchase_order_import
+#: model:ir.model,name:purchase_order_import.model_purchase_order
+msgid "Purchase Order"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,input_file:0
+msgid "Purchase Order File (.xlsx Format)"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:error.log:purchase_order_import.import_error_log_form_purchase
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: purchase_order_import
+#: model:ir.ui.menu,name:purchase_order_import.purchase_import_default_menu
+msgid "Purhcase Import Defaults"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:error.log,purchase_order_ids:0
+msgid "Related Purchase Orders"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,supplier_invoice_journal_id:0
+#: field:purchase.import.default,supplier_invoice_journal_id:0
+msgid "Supplier Invoice Journal"
+msgstr ""
+
+#. module: purchase_order_import
+#: field:import.purchase,supplier_payment_journal_id:0
+#: field:purchase.import.default,supplier_payment_journal_id:0
+msgid "Supplier Payment Journal"
+msgstr ""
+
+#. module: purchase_order_import
+#: view:import.purchase:purchase_order_import.view_purchase_import_wizard
+msgid "This wizard will create purchase orders using purchase order .xlsx file. It will also validate purchase order, validate invoice and pay invoice."
+msgstr ""
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:180
+#, python-format
+msgid "Wrong file format. Please enter .xlsx file."
+msgstr ""
+
+#. module: purchase_order_import
+#: view:import.purchase:purchase_order_import.view_purchase_import_wizard
+msgid "or"
+msgstr ""
+
