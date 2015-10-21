@@ -36,9 +36,11 @@ Go to `Import > Data Import Log > Import Log` to find the import history / error
 Program Logic
 -------------
 
-* `Group` values should be used to separate purchase orders.
-* Products are identified based on Internal Reference (`default_code`).
-* Purchase order currency is determined based on the selected Pricelist
-* If `Line Description` is left blank, let the system propose the description according to the standard logic.
-* For document level fields (Supplier, Pricelist, Notes, Warehouse, etc.), the program only looks at the first record in the same `Group` and ignore the rest (there will be no error even if there is inconsistency - e.g. different Suppliers for the same PO).
+* "Group" values should be used to separate purchase orders.
+* Products are identified based on "Internal Reference" (`default_code`).
+* Suppliers are identified based on "Name".
+* Negative values are not allowed for "Unit Price" and "Qty" fields of the import file.
+* Purchase order currency is determined based on the selected "Pricelist".
+* If "Line Description" is left blank, the system proposes a description according to the standard logic (i.e. "Internal Reference" + "Name" of the product).
+* For document level fields (Supplier, Pricelist, Notes, Warehouse, etc.), the program only looks at the first record in the same "Group" and ignore the rest (there will be no error even if there is inconsistency - e.g. different Suppliers for the same PO).
 * The program should not create any record if there is an error in any of the record.  User is expected to find the error content in the error log, correct all the errors in the import file, and re-import it.
