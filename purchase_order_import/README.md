@@ -36,6 +36,7 @@ Go to `Import > Data Import Log > Import Log` to find the import history / error
 Program Logic
 -------------
 
+* The first line of the import file is field labels.  Records for import should prepared from the second line onwards.
 * "Group" values should be used to separate purchase orders.
 * Products are identified based on "Internal Reference" (`default_code`).
 * Suppliers are identified based on "Name".
