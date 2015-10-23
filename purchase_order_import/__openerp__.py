@@ -16,17 +16,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 {
-    'name': 'Purchase Data Import',
+    'name': 'Purchase Order Import',
     'category': 'Purchase Management',
     'version': '8.0.1.0',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
     'depends': ['purchase', 'account_voucher', 'base_import_log'],
     'website': 'www.openerp-asia.net',
     'description': """ 
-Import purchase data.
+Imports purchase data and processes the following:
+- purchase order creation
+- supplier invoice creation
+- payment creation
     """,
     'summary':""" Import purchase data""",
     'data': [
+            'security/ir.model.access.csv',
             'views/purchase_import_default.xml',
             'views/purchase_view.xml',
             'wizard/import_purchase_view.xml',

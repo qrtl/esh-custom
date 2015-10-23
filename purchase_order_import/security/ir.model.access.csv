@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_import_default,purchase.import.default,model_purchase_import_default,base_import_log.group_data_importing,1,1,1,1
