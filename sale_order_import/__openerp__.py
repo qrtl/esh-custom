@@ -23,7 +23,7 @@
     'depends': ['sale', 'base_import_log', 'account_voucher'],
     'website': 'www.openerp-asia.net',
     'description': """ 
-Import sale data.
+Import sales data.
     """,
     'summary':""" Import sale data""",
     'data': [
