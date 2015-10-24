@@ -191,38 +191,41 @@ class import_picking(models.TransientModel):
                     voucher_id.signal_workflow('proforma_voucher')
     
     @api.model
-    def _purchase_picking_process(self, order_number, orders, error_line_vals):
+    def _purchase_picking_process(self, order_number, error_line_vals):
         order_id = self.env['purchase.order'].search([('name', 'ilike', order_number)])
         picking_ids = []
         if not order_id:
             error_line_vals['error_name'] = error_line_vals['error_name'] + 'Order: ' + order_number + ' Not Found! \n'
             error_line_vals['error'] = True
+            error_line_vals.update({'picking_type':'purchase'})
         else:
             if order_id.picking_ids:
                 for picking in order_id.picking_ids:
-                    picking.action_assign()
-                    if picking.state == 'assigned':
-                        picking_ids.append(picking)
-                        picking.do_transfer()
-                        if picking.invoice_state == '2binvoiced':
-                            self._process_purchase_invoice(picking, order_id)
-                    else:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State: ' + picking.state + ' Not Ready to Transfer! \n'
-                        error_line_vals['error'] = True
-                        error_line_vals.update({'picking_type':'purchase' })
+                    if not picking.state == 'done' and not picking.state == 'cancel':
+                        picking.action_assign()
+                        if picking.state == 'assigned':
+                            picking_ids.append(picking)
+                            picking.do_transfer()
+                            if picking.invoice_state == '2binvoiced':
+                                self._process_purchase_invoice(picking, order_id)
+                        else:
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State: ' + picking.state + ' Not Ready to Transfer! \n'
+                            error_line_vals['error'] = True
+                            error_line_vals.update({'picking_type':'purchase'})
         return picking_ids
 
     @api.model
-    def _sale_picking_process(self, order_number, orders, error_line_vals):
+    def _sale_picking_process(self, order_number, error_line_vals):
         order_id = self.env['sale.order'].search([('name', 'ilike', order_number)])
         picking_ids = []
         if not order_id:
             error_line_vals['error_name'] = error_line_vals['error_name'] + 'Order: ' + order_number + ' Not Found! \n'
             error_line_vals['error'] = True
+            error_line_vals.update({'picking_type':'sale'})
         else:
             if order_id.picking_ids:
                 for picking in order_id.picking_ids:
-                    if not picking.state == 'done':
+                    if not picking.state == 'done' and not picking.state == 'cancel':
                         picking.action_assign()
                         if picking.state == 'assigned':
                             picking_ids.append(picking)
@@ -230,7 +233,7 @@ class import_picking(models.TransientModel):
                             if picking.invoice_state == '2binvoiced':
                                 self._process_sale_invoice(picking, order_id)
                         else:
-                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State: ' + picking.state + ' Not Ready to Transfer! \n'
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + 'Waiting Availibility ' + ' so picking could not be transferred. Please make sure stock is available in warehouse to process this picking.\n'
                             error_line_vals['error'] = True
                             error_line_vals.update({'picking_type':'sale' })
         return picking_ids
@@ -252,7 +255,6 @@ class import_picking(models.TransientModel):
             fileobj.seek(0)
             reader = csv.reader(fileobj)
             
-            orders = []
             sale_picking_ids = []
             purchase_picking_ids = []
             line = 0
@@ -264,13 +266,15 @@ class import_picking(models.TransientModel):
                     continue
                 order_number = row[number].strip()
                 error_line_vals = {'error_name' : '', 'error': False}
+
                 if order_number:
                     if self.picking_type == 'sale':
-                        successed_picking_ids = self._sale_picking_process(order_number, orders, error_line_vals)
+                        successed_picking_ids = self._sale_picking_process(order_number, error_line_vals)
                         sale_picking_ids.extend(successed_picking_ids)
                     else:
-                        successed_picking_ids = self._purchase_picking_process(order_number, orders, error_line_vals)
+                        successed_picking_ids = self._purchase_picking_process(order_number, error_line_vals)
                         purchase_picking_ids.extend(successed_picking_ids)
+
                 error_log_id = self._update_error_log(error_log_id, error_line_vals, ir_attachment, model, line, order_number)
             if not error_log_id:
                 error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
