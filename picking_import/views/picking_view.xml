@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>        
+        <record model="ir.ui.view" id="stock_picking_inherit_for_import">
+            <field name="name">stock.picking.inherit.for.import</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="imported_order"/> 
+                    <field name="order_ref"/>
+                </xpath>
+            </field>
+         </record>
+    </data>
+</openerp>
