@@ -247,7 +247,16 @@ class import_sale(models.TransientModel):
                     pricelist_id = row.index('Pricelist')
                     warehouse_id = row.index('Warehouse')
                     continue
-                
+
+                check_list = []# Below logic for is row values are empty on all columns then skip that line.
+                order_group_value = row[order_group].strip()
+                if not bool(row[order_group].strip()):
+                    for r in row:
+                        if bool(r.strip()):
+                            check_list.append(r)
+                    if not bool(row[order_group].strip()) and not check_list:
+                        continue                
+
                 error_line_vals = {'error_name' : '', 'error': False}
                 partner_value = row[partner_id].strip()
                 if partner_value:

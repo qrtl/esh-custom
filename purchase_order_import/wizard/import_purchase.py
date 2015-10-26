@@ -16,7 +16,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from openerp import models, fields, api, _
+import csv
 from datetime import datetime
+from tempfile import TemporaryFile
 import base64
 import xlrd
 import sys
@@ -41,8 +43,8 @@ class import_purchase(models.TransientModel):
 
     input_file = fields.Binary('Purchase Order File (.xlsx Format)', required=True)
     datas_fname = fields.Char('File Path')
-    supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id)
-    supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id)
+    supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id, required=True)
+    supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id, required=True)
 
 
     @api.model
@@ -169,17 +171,17 @@ class import_purchase(models.TransientModel):
             raise Warning(_('Error!'),_('Please select Supplier Payment Journal.'))
         
         for line in self:
-            try:
-                lines = xlrd.open_workbook(file_contents=base64.decodestring(self.input_file))
-            except IOError as e:
-                raise Warning(_('Import Error!'),_(e.strerror))
-            except ValueError as e:
-                raise Warning(_('Import Error!'),_(e.strerror))
-            except:
-                e = sys.exc_info()[0]
-                raise Warning(_('Import Error!'),_('Wrong file format. Please enter .xlsx file.'))
-            if len(lines.sheet_names()) > 1:
-                raise Warning(_('Import Error!'),_('Please check your xlsx file, it seems it contains more than one sheet.'))
+#             try:
+#                 lines = xlrd.open_workbook(file_contents=base64.decodestring(self.input_file))
+#             except IOError as e:
+#                 raise Warning(_('Import Error!'),_(e.strerror))
+#             except ValueError as e:
+#                 raise Warning(_('Import Error!'),_(e.strerror))
+#             except:
+#                 e = sys.exc_info()[0]
+#                 raise Warning(_('Import Error!'),_('Wrong file format. Please enter .csv file.'))
+#             if len(lines.sheet_names()) > 1:
+#                 raise Warning(_('Import Error!'),_('Please check your csv file, it seems it contains more than one sheet.'))
 
             model = self.env['ir.model'].search([('model', '=', 'purchase.order')])
 
@@ -192,180 +194,193 @@ class import_purchase(models.TransientModel):
             picking_dict = {}
             error_log_id = False
             
+            
+            fileobj = TemporaryFile('w+')
+            fileobj.write(base64.decodestring(self.input_file))
+            fileobj.seek(0)
+            reader = csv.reader(fileobj)
+            
             ir_attachment = self.env['ir.attachment'].create({'name': self.datas_fname,
                         'datas': self.input_file,
                         'datas_fname': self.datas_fname})
-            
-            for sheet_name in lines.sheet_names():
-                sheet = lines.sheet_by_name(sheet_name)
-                rows = sheet.nrows
-                columns = sheet.ncols
-                order_group = sheet.row_values(0).index('Group')
-                date_planned = sheet.row_values(0).index('Line Planned Date')
-                product_id = sheet.row_values(0).index('Line Product')
-                line_name = sheet.row_values(0).index('Line Description')
-                price_unit = sheet.row_values(0).index('Line Unit Price')
-                product_qty = sheet.row_values(0).index('Line Qty')
-                taxes_id = sheet.row_values(0).index('Line Tax')
-                partner_id = sheet.row_values(0).index('Supplier')
-                pricelist_id = sheet.row_values(0).index('Pricelist')
-                warehouse_id = sheet.row_values(0).index('Warehouse')
-                invoice_method_name = sheet.row_values(0).index('Invoice Method')
-                notes = sheet.row_values(0).index('Notes')
+            line = 0
+            for row in reader:
+                line += 1
+                if line == 1:#Get the index of header and skip the first line
+                    order_group = row.index('Group')
+                    date_planned = row.index('Line Planned Date')
+                    product_id = row.index('Line Product')
+                    line_name = row.index('Line Description')
+                    price_unit = row.index('Line Unit Price')
+                    product_qty = row.index('Line Qty')
+                    taxes_id = row.index('Line Tax')
+                    partner_id = row.index('Supplier')
+                    pricelist_id = row.index('Pricelist')
+                    warehouse_id = row.index('Warehouse')
+                    invoice_method_name = row.index('Invoice Method')
+                    notes = row.index('Notes')
+                    continue
+                
+                check_list = []# Below logic for is row values are empty on all columns then skip that line.
+                order_group_value = row[order_group].strip()
+                if not bool(row[order_group].strip()):
+                    for r in row:
+                        if bool(r.strip()):
+                            check_list.append(r)
+                if not bool(row[order_group].strip()) and not check_list:
+                    continue
+                
+                error_line_vals = {'error_name' : '', 'error': False}
+                partner_value = row[partner_id].strip()
+                if partner_value:
+                    self._get_partner_dict(partner_value, partner_dict, error_line_vals)
+                
+                product_id_value = row[product_id].strip()
+                if product_id_value:
+                    self._get_product_dict(product_id_value, product_dict, error_line_vals)
+                
+                pricelist_value = row[pricelist_id].strip()
+                if pricelist_value:
+                    self._get_pricelist_dict(pricelist_value, pricelist_dict, error_line_vals)
+                
+                invoice_method_value =row[invoice_method_name].strip()
+                invoice_method = self._get_invoice_method(invoice_method_value, error_line_vals)
+                
+                warehouse_value = row[warehouse_id].strip()
+                if warehouse_value:
+                    self._get_picking_dict(warehouse_value, picking_dict, error_line_vals)
+                
+                taxes = []
+                tax_from_chunk = row[taxes_id].strip()
+                if tax_from_chunk:
+                    self._get_taxes(tax_from_chunk, taxes, error_line_vals)
 
-                for row_no in range(1, rows):  # skip the first row
-                    order_group_value = sheet.row_values(row_no)[order_group]
-                    error_line_vals = {'error_name' : '', 'error': False}
-                    partner_value = sheet.row_values(row_no)[partner_id]
-                    if partner_value:
-                        self._get_partner_dict(partner_value, partner_dict, error_line_vals)
-                    
-                    product_id_value = sheet.row_values(row_no)[product_id]
-                    if product_id_value:
-                        self._get_product_dict(product_id_value, product_dict, error_line_vals)
-                    
-                    pricelist_value = sheet.row_values(row_no)[pricelist_id]
-                    if pricelist_value:
-                        self._get_pricelist_dict(pricelist_value, pricelist_dict, error_line_vals)
-                    
-                    invoice_method_value = sheet.row_values(row_no)[invoice_method_name]
-                    invoice_method = self._get_invoice_method(invoice_method_value, error_line_vals)
-                    
-                    warehouse_value = sheet.row_values(row_no)[warehouse_id]
-                    if warehouse_value:
-                        self._get_picking_dict(warehouse_value, picking_dict, error_line_vals)
-                    
-                    taxes = []
-                    tax_from_chunk = sheet.row_values(row_no)[taxes_id]
-                    if tax_from_chunk:
-                        self._get_taxes(tax_from_chunk, taxes, error_line_vals)
-
-                    qty = float(sheet.row_values(row_no)[product_qty])
-                    if qty < 0:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Quantity not less then zero! \n'
-                        error_line_vals['error'] = True
-                    
-                    price_unit_value = float(sheet.row_values(row_no)[price_unit])
-                    if price_unit_value < 0:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
-                        error_line_vals['error'] = True
-                    
-                    error_log_id = self._update_error_log(error_log_id, error_line_vals, ir_attachment, model, row_no, order_group_value)
-                    
-                    order = sheet.row_values(row_no)[order_group]
-                    if not error_log_id:
-                        name = sheet.row_values(row_no)[line_name]
-                        
-                        product_data = self.env['purchase.order.line'].onchange_product_id(pricelist_dict[pricelist_value], product_dict[product_id_value], qty, False, partner_dict[partner_value],
-                                                                            False, False, False, False, price_unit, 'draft')
-                        if not name:
-                            name = product_data['value']['name']
-                        planned_date = sheet.row_values(row_no)[date_planned]
-                        if not planned_date:
-                            planned_date = product_data['value']['date_planned']
-                        state = 'draft'
-                        if order not in order_item_dict.keys():
-                            order_item_dict[order] = [{
-                                                'name' : name,
-                                                'product_id' : product_dict[product_id_value],
-                                                'product_qty' : qty,
-                                                'date_planned' : planned_date,
-                                                'price_unit' : price_unit_value,
-                                                'state' : state,
-                                                'taxes_id': taxes,
-                                                }]
-                        else:
-                            order_item_dict[order].append({
-                                                'name' : name,
-                                                'product_id' : product_dict[product_id_value],
-                                                'product_qty' : qty,
-                                                'date_planned' : planned_date,
-                                                'price_unit' : price_unit_value,
-                                                'state' : state,
-                                                'taxes_id':taxes,
-                                                })
-                        
-                        if order_group_value not in order_dict:
-                            pricelist_data = self.env['purchase.order'].onchange_pricelist(pricelist_dict[pricelist_value])
-                            order_dict[order_group_value] = {
-                                            'partner_id' : partner_dict[partner_value],
-                                            'pricelist_id' : pricelist_dict[pricelist_value],
-                                            'location_id': picking_dict[warehouse_value].default_location_dest_id and picking_dict[warehouse_value].default_location_dest_id.id,
-                                            'invoice_method': invoice_method,
-                                            'currency_id' : pricelist_data['value']['currency_id'],
-                                            'date_order' : planned_date,
-                                            'notes': sheet.row_values(row_no)[notes]
-                                            }
-                                
+                qty = float(row[product_qty].strip())
+                if qty < 0:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Quantity not less then zero! \n'
+                    error_line_vals['error'] = True
+                
+                price_unit_value = float(row[price_unit].strip())
+                if price_unit_value < 0:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
+                    error_line_vals['error'] = True
+                
+                error_log_id = self._update_error_log(error_log_id, error_line_vals, ir_attachment, model, line, order_group_value)
+                
+                order = row[order_group].strip()
                 if not error_log_id:
-                    error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
-                                                                 'import_user_id' : self.env.user.id,
-                                                                 'import_date': datetime.now(),
-                                                                 'state': 'done',
-                                                                 'model_id': model.id}).id
-                                                                    
-                    for item in order_item_dict:
-                        order_id = self._get_order_id(order_dict[item], item, error_log_id)
-                        
-                        for po_line in order_item_dict[item]:
-                            orderline_id = self._get_orderline_id(po_line, order_id)
+                    name = row[line_name].strip()
+                    
+                    product_data = self.env['purchase.order.line'].onchange_product_id(pricelist_dict[pricelist_value], product_dict[product_id_value], qty, False, partner_dict[partner_value],
+                                                                        False, False, False, False, price_unit, 'draft')
+                    if not name:
+                        name = product_data['value']['name']
+                    planned_date = row[date_planned].strip()
+                    if not planned_date:
+                        planned_date = product_data['value']['date_planned']
+                    state = 'draft'
+                    if order not in order_item_dict.keys():
+                        order_item_dict[order] = [{
+                                            'name' : name,
+                                            'product_id' : product_dict[product_id_value],
+                                            'product_qty' : qty,
+                                            'date_planned' : planned_date,
+                                            'price_unit' : price_unit_value,
+                                            'state' : state,
+                                            'taxes_id': taxes,
+                                            }]
+                    else:
+                        order_item_dict[order].append({
+                                            'name' : name,
+                                            'product_id' : product_dict[product_id_value],
+                                            'product_qty' : qty,
+                                            'date_planned' : planned_date,
+                                            'price_unit' : price_unit_value,
+                                            'state' : state,
+                                            'taxes_id':taxes,
+                                            })
+                    
+                    if order_group_value not in order_dict:
+                        pricelist_data = self.env['purchase.order'].onchange_pricelist(pricelist_dict[pricelist_value])
+                        order_dict[order_group_value] = {
+                                        'partner_id' : partner_dict[partner_value],
+                                        'pricelist_id' : pricelist_dict[pricelist_value],
+                                        'location_id': picking_dict[warehouse_value].default_location_dest_id and picking_dict[warehouse_value].default_location_dest_id.id,
+                                        'invoice_method': invoice_method,
+                                        'currency_id' : pricelist_data['value']['currency_id'],
+                                        'date_order' : planned_date,
+                                        'notes': row[notes].strip()
+                                        }
+                                
+            if not error_log_id:
+                error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
+                                                             'import_user_id' : self.env.user.id,
+                                                             'import_date': datetime.now(),
+                                                             'state': 'done',
+                                                             'model_id': model.id}).id
+                                                                
+                for item in order_item_dict:
+                    order_id = self._get_order_id(order_dict[item], item, error_log_id)
+                    
+                    for po_line in order_item_dict[item]:
+                        orderline_id = self._get_orderline_id(po_line, order_id)
 
-                        order_id.signal_workflow('purchase_confirm')
-                        
-                        if order_id.invoice_ids:
-                            for invoice in order_id.invoice_ids:
-                                invoice.journal_id = self.supplier_invoice_journal_id.id
-                                if invoice.state == 'draft':
-                                    invoice.signal_workflow('invoice_open')
-                                    if self.supplier_payment_journal_id.currency and self.supplier_payment_journal_id.currency.id != invoice.currency_id.id:
-                                        currency_id_voucher = self.supplier_payment_journal_id.currency.id
-                                        voucher_amount = invoice.currency_id.compute(invoice.amount_total, self.supplier_payment_journal_id.currency)
-                                    elif not self.supplier_payment_journal_id.currency and invoice.currency_id.id != invoice.company_id.currency_id.id:
-                                        currency_id_voucher = invoice.company_id.currency_id.id
-                                        voucher_amount = invoice.currency_id.compute(invoice.amount_total, invoice.company_id.currency_id)
-                                    else:
-                                        currency_id_voucher = invoice.currency_id.id
-                                        voucher_amount = invoice.amount_total
-                                    partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
-                                                                                                    self.supplier_payment_journal_id.id,
-                                                                                                    voucher_amount,
-                                                                                                    currency_id_voucher,
-                                                                                                    'payment',
-                                                                                                    invoice.date_invoice)
-                                    journal_data = self.env['account.voucher'].onchange_journal_voucher(line_ids= False,
-                                                                                                        tax_id=False,
-                                                                                                        price=0.0, 
-                                                                                                        partner_id=invoice.partner_id.id,
-                                                                                                        journal_id=self.supplier_payment_journal_id.id,
-                                                                                                        ttype='payment',
-                                                                                                        company_id=invoice.company_id.id)
-                                    line_dr_list = []
-                                    for line in partner_data['value']['line_dr_ids']:
-                                        moveline = self.env['account.move.line'].browse(line['move_line_id'])
-                                        if invoice.id == moveline.invoice.id:
-                                            line['amount'] = voucher_amount
-                                            line_dr_list.append((0, 0, line))
-                                            break #IF one line found then get out of loop since invoice and payment has one to one relation.
-                                    voucher_vals = {
-                                        'name': '/',
-                                        'partner_id' : invoice.partner_id.id,
-                                        'company_id' : invoice.company_id.id,
-                                        'journal_id' : self.supplier_payment_journal_id.id,
-                                        'currency_id': currency_id_voucher,
-                                        'line_ids' : False,
-                                        'line_cr_ids' : False,
-                                        'line_dr_ids' : line_dr_list,
-                                        'account_id' : partner_data['value']['account_id'],
-                                        'period_id': journal_data['value']['period_id'],
-                                        'state': 'draft',
-                                        'date' : invoice.date_invoice,
-                                        'type': 'payment',
-                                        'amount' : voucher_amount,
-                                        'payment_rate': journal_data['value']['payment_rate'],
-                                        'payment_rate_currency_id': journal_data['value']['payment_rate_currency_id']
-                                    }
-                                    voucher_id = self.env['account.voucher'].create(voucher_vals)
-                                    voucher_id.signal_workflow('proforma_voucher')
+                    order_id.signal_workflow('purchase_confirm')
+                    
+                    if order_id.invoice_ids:
+                        for invoice in order_id.invoice_ids:
+                            invoice.journal_id = self.supplier_invoice_journal_id.id
+                            if invoice.state == 'draft':
+                                invoice.signal_workflow('invoice_open')
+                                if self.supplier_payment_journal_id.currency and self.supplier_payment_journal_id.currency.id != invoice.currency_id.id:
+                                    currency_id_voucher = self.supplier_payment_journal_id.currency.id
+                                    voucher_amount = invoice.currency_id.compute(invoice.amount_total, self.supplier_payment_journal_id.currency)
+                                elif not self.supplier_payment_journal_id.currency and invoice.currency_id.id != invoice.company_id.currency_id.id:
+                                    currency_id_voucher = invoice.company_id.currency_id.id
+                                    voucher_amount = invoice.currency_id.compute(invoice.amount_total, invoice.company_id.currency_id)
+                                else:
+                                    currency_id_voucher = invoice.currency_id.id
+                                    voucher_amount = invoice.amount_total
+                                partner_data  = self.env['account.voucher'].onchange_partner_id(invoice.partner_id.id,
+                                                                                                self.supplier_payment_journal_id.id,
+                                                                                                voucher_amount,
+                                                                                                currency_id_voucher,
+                                                                                                'payment',
+                                                                                                invoice.date_invoice)
+                                journal_data = self.env['account.voucher'].onchange_journal_voucher(line_ids= False,
+                                                                                                    tax_id=False,
+                                                                                                    price=0.0, 
+                                                                                                    partner_id=invoice.partner_id.id,
+                                                                                                    journal_id=self.supplier_payment_journal_id.id,
+                                                                                                    ttype='payment',
+                                                                                                    company_id=invoice.company_id.id)
+                                line_dr_list = []
+                                for line in partner_data['value']['line_dr_ids']:
+                                    moveline = self.env['account.move.line'].browse(line['move_line_id'])
+                                    if invoice.id == moveline.invoice.id:
+                                        line['amount'] = voucher_amount
+                                        line_dr_list.append((0, 0, line))
+                                        break #IF one line found then get out of loop since invoice and payment has one to one relation.
+                                voucher_vals = {
+                                    'name': '/',
+                                    'partner_id' : invoice.partner_id.id,
+                                    'company_id' : invoice.company_id.id,
+                                    'journal_id' : self.supplier_payment_journal_id.id,
+                                    'currency_id': currency_id_voucher,
+                                    'line_ids' : False,
+                                    'line_cr_ids' : False,
+                                    'line_dr_ids' : line_dr_list,
+                                    'account_id' : partner_data['value']['account_id'],
+                                    'period_id': journal_data['value']['period_id'],
+                                    'state': 'draft',
+                                    'date' : invoice.date_invoice,
+                                    'type': 'payment',
+                                    'amount' : voucher_amount,
+                                    'payment_rate': journal_data['value']['payment_rate'],
+                                    'payment_rate_currency_id': journal_data['value']['payment_rate_currency_id']
+                                }
+                                voucher_id = self.env['account.voucher'].create(voucher_vals)
+                                voucher_id.signal_workflow('proforma_voucher')
                          
             res = self.env.ref('base_import_log.error_log_action')
             res = res.read()[0]
