@@ -69,8 +69,12 @@ class import_sale(models.TransientModel):
                 ('picking', 'On Delivery Order'),
                 ('prepaid', 'Before Delivery')],
                 required=True, string='Create Invoice', default=_get_order_policy)
-    customer_invoice_journal_id = fields.Many2one('account.journal', string='Customer Invoice Journal', default=_get_customer_invoice_journal_id)
-    customer_payment_journal_id = fields.Many2one('account.journal', string='Customer Payment Journal', default=_get_customer_payment_journal_id)
+    customer_invoice_journal_id = fields.Many2one('account.journal',
+                required=True, string='Customer Invoice Journal',
+                default=_get_customer_invoice_journal_id)
+    customer_payment_journal_id = fields.Many2one('account.journal',
+                required=True, string='Customer Payment Journal',
+                default=_get_customer_payment_journal_id)
 
 
     @api.model
@@ -187,11 +191,11 @@ class import_sale(models.TransientModel):
 
     @api.multi
     def import_sale_data(self):
-        if not self.customer_invoice_journal_id:
-            raise Warning(_('Error!'),_('Please select Customer Invoice Journal.'))
-        
-        if not self.customer_payment_journal_id:
-            raise Warning(_('Error!'),_('Please select Customer Payment Journal.'))
+#         if not self.customer_invoice_journal_id:
+#             raise Warning(_('Error!'),_('Please select Customer Invoice Journal.'))
+#         
+#         if not self.customer_payment_journal_id:
+#             raise Warning(_('Error!'),_('Please select Customer Payment Journal.'))
         for line in self:
 #             try:
 #                 lines = xlrd.open_workbook(file_contents=base64.decodestring(self.input_file))
