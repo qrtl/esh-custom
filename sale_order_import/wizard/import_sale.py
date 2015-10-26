@@ -29,9 +29,22 @@ from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp import models, fields, api, _
 from openerp import tools
 
+
 class import_sale(models.TransientModel):
     _name = 'import.sale'
     
+    @api.model
+    def _get_picking_policy(self):
+        default_rec = self.env['sale.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
+        if default_rec:
+            return default_rec.picking_policy
+
+    @api.model
+    def _get_order_policy(self):
+        default_rec = self.env['sale.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
+        if default_rec:
+            return default_rec.order_policy
+
     @api.model
     def _get_customer_invoice_journal_id(self):
         default_rec = self.env['sale.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
@@ -47,6 +60,15 @@ class import_sale(models.TransientModel):
 
     input_file = fields.Binary('Sale Order File (.CSV Format)', required=True)
     datas_fname = fields.Char('File Path')
+    picking_policy = fields.Selection([
+                ('direct', 'Deliver each product when available'),
+                ('one', 'Deliver all products at once')],
+                required=True, string='Shipping Policy', default=_get_picking_policy)
+    order_policy = fields.Selection([
+                ('manual', 'On Demand'),
+                ('picking', 'On Delivery Order'),
+                ('prepaid', 'Before Delivery')],
+                required=True, string='Create Invoice', default=_get_order_policy)
     customer_invoice_journal_id = fields.Many2one('account.journal', string='Customer Invoice Journal', default=_get_customer_invoice_journal_id)
     customer_payment_journal_id = fields.Many2one('account.journal', string='Customer Payment Journal', default=_get_customer_payment_journal_id)
 
@@ -81,27 +103,6 @@ class import_sale(models.TransientModel):
             else:
                 pricelist_dict[pricelist_value] = pricelist.id
 
-    @api.model
-    def _get_order_policy(self, order_policy_value, error_line_vals):
-        order_policy_dict = {'On Demand' : 'manual',
-                              'On Delivery Order' : 'picking',
-                              'Before Delivery' : 'prepaid'}
-        if not order_policy_value in order_policy_dict:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Order Policy: ' + order_policy_value + ' Not Found! \n'
-            error_line_vals['error'] = True
-        else:
-            return order_policy_dict[order_policy_value]
-    
-    @api.model
-    def _get_picking_policy(self, picking_policy_value, error_line_vals):
-        picking_policy_dict = {'Deliver each product when available' : 'direct',
-                              'Deliver all products at once' : 'one'}
-        if not picking_policy_value in picking_policy_dict:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking Policy: ' + picking_policy_value + ' Not Found! \n'
-            error_line_vals['error'] = True
-        else:
-            return picking_policy_dict[picking_policy_value]
-    
     @api.model
     def _get_picking_dict(self, warehouse_value, picking_dict, error_line_vals):
         warehouse_id = self.env['stock.warehouse'].search([('name','=',warehouse_value)]).id
@@ -221,8 +222,11 @@ class import_sale(models.TransientModel):
              
             fileobj = TemporaryFile('w+')
             fileobj.write(base64.decodestring(self.input_file))
+            print "self.input_file"+self.input_file
             fileobj.seek(0)
+            print fileobj
             reader = csv.reader(fileobj)
+            print reader
             
             line = 0
             for row in reader:
@@ -238,8 +242,6 @@ class import_sale(models.TransientModel):
                     notes = row.index('Notes')
                     pricelist_id = row.index('Pricelist')
                     warehouse_id = row.index('Warehouse')
-                    picking_policy_id = row.index('Picking Policy')
-                    order_policy_id = row.index('Order Policy')
                     continue
                 
                 error_line_vals = {'error_name' : '', 'error': False}
@@ -274,14 +276,11 @@ class import_sale(models.TransientModel):
                     error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
                     error_line_vals['error'] = True
                 
-                order_policy = self._get_order_policy(row[order_policy_id].strip(), error_line_vals)
-                
-                picking_policy = self._get_picking_policy(row[picking_policy_id].strip(), error_line_vals)
+                order_policy = self.order_policy
+                picking_policy = self.picking_policy
                 order = row[order_group].strip()
                 
-                
                 error_log_id = self._update_error_log(error_log_id, error_line_vals, ir_attachment, model, line, order)
-                
                 
                 if not error_log_id:
                     name = row[line_name].strip()

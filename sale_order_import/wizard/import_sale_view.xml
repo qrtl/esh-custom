@@ -28,7 +28,13 @@
                             <field name="input_file" filename="datas_fname" />
                             <field name="datas_fname" invisible="1"/>
                         </group>
+                    </group>
+                    <group>
                         <group>
+                            <field name="picking_policy"/>
+                        </group>
+                        <group>
+                            <field name="order_policy"/>
                         </group>
                     </group>
                     <group>

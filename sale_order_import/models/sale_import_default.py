@@ -27,6 +27,15 @@ class SaleImportDefault(models.Model):
         self.customer_payment_journal_id = False
 
     company_id = fields.Many2one('res.company', required=True, string='Company')
+    picking_policy = fields.Selection([
+                ('direct', 'Deliver each product when available'),
+                ('one', 'Deliver all products at once')],
+                required=True, string='Shipping Policy')
+    order_policy = fields.Selection([
+                ('manual', 'On Demand'),
+                ('picking', 'On Delivery Order'),
+                ('prepaid', 'Before Delivery')],
+                required=True, string='Create Invoice')
     customer_invoice_journal_id = fields.Many2one('account.journal', required=True, string='Customer Invoice Journal')
     customer_payment_journal_id = fields.Many2one('account.journal', required=True, string='Customer Payment Journal')
 

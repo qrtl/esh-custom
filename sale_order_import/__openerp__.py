@@ -16,18 +16,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 {
-    'name': 'Sale Data Import',
+    'name': 'Sales Order Import',
     'category': 'Sales Management',
     'version': '8.0.1.0',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
     'depends': ['sale', 'base_import_log', 'account_voucher'],
     'website': 'www.openerp-asia.net',
     'description': """ 
-Import sales data.
+Imports sales data.
     """,
-    'summary':""" Import sale data""",
+    'summary':"",
     'data': [
-             'security/ir.model.access.csv',
+            'security/ir.model.access.csv',
             'views/sale_import_default.xml',
             'views/sale_view.xml',
             'wizard/import_sale_view.xml',
