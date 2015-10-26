@@ -226,11 +226,8 @@ class import_sale(models.TransientModel):
              
             fileobj = TemporaryFile('w+')
             fileobj.write(base64.decodestring(self.input_file))
-            print "self.input_file"+self.input_file
             fileobj.seek(0)
-            print fileobj
             reader = csv.reader(fileobj)
-            print reader
             
             line = 0
             for row in reader:
