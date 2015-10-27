@@ -27,6 +27,11 @@ class PurhcaseImportDefault(models.Model):
         self.supplier_payment_journal_id = False
 
     company_id = fields.Many2one('res.company', required=True, string='Company')
+    invoice_method = fields.Selection([
+        ('manual', 'Based on Purchase Order lines'),
+        ('order', 'Based on generated draft invoice'),
+        ('picking', 'Based on incoming shipments')],
+        required=True, string='Invoicing Control')
     supplier_invoice_journal_id = fields.Many2one('account.journal', required=True, string='Supplier Invoice Journal')
     supplier_payment_journal_id = fields.Many2one('account.journal', required=True, string='Supplier Payment Journal')
 

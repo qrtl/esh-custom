@@ -29,6 +29,12 @@ class import_purchase(models.TransientModel):
     _name = 'import.purchase'
     
     @api.model
+    def _get_invoice_method(self):
+        default_rec = self.env['purchase.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
+        if default_rec:
+            return default_rec.invoice_method
+
+    @api.model
     def _get_supplier_invoice_journal_id(self):
         default_rec = self.env['purchase.import.default'].search([('company_id','=',self.env.user.company_id.id)], limit=1)
         if default_rec:
@@ -43,6 +49,11 @@ class import_purchase(models.TransientModel):
 
     input_file = fields.Binary('Purchase Order File (.xlsx Format)', required=True)
     datas_fname = fields.Char('File Path')
+    invoice_method = fields.Selection([
+        ('manual', 'Based on Purchase Order lines'),
+        ('order', 'Based on generated draft invoice'),
+        ('picking', 'Based on incoming shipments')],
+        required=True, string='Invoicing Control', default=_get_invoice_method)
     supplier_invoice_journal_id = fields.Many2one('account.journal', string='Supplier Invoice Journal', default=_get_supplier_invoice_journal_id, required=True)
     supplier_payment_journal_id = fields.Many2one('account.journal', string='Supplier Payment Journal', default=_get_supplier_payment_journal_id, required=True)
 
@@ -77,16 +88,6 @@ class import_purchase(models.TransientModel):
             else:
                 pricelist_dict[pricelist_value] = pricelist.id
 
-    @api.model
-    def _get_invoice_method(self, invoice_method_value, error_line_vals):
-        invoice_method_dict = {'Based on Purchase Order lines' : 'manual',
-                              'Based on generated draft invoice' : 'order',
-                              'Based on incoming shipments' : 'picking'}
-        if not invoice_method_value in invoice_method_dict:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Invoice Method: ' + invoice_method_value + ' Not Found! \n'
-            error_line_vals['error'] = True
-        return invoice_method_dict[invoice_method_value]
-    
     @api.model
     def _get_picking_dict(self, warehouse_value, picking_dict, error_line_vals):
         warehouse_id = self.env['stock.warehouse'].search([('name','=',warehouse_value)]).id
@@ -217,7 +218,7 @@ class import_purchase(models.TransientModel):
                     partner_id = row.index('Supplier')
                     pricelist_id = row.index('Pricelist')
                     warehouse_id = row.index('Warehouse')
-                    invoice_method_name = row.index('Invoice Method')
+#                     invoice_method_name = row.index('Invoice Method')
                     notes = row.index('Notes')
                     continue
                 
@@ -243,8 +244,7 @@ class import_purchase(models.TransientModel):
                 if pricelist_value:
                     self._get_pricelist_dict(pricelist_value, pricelist_dict, error_line_vals)
                 
-                invoice_method_value =row[invoice_method_name].strip()
-                invoice_method = self._get_invoice_method(invoice_method_value, error_line_vals)
+                invoice_method = self.invoice_method
                 
                 warehouse_value = row[warehouse_id].strip()
                 if warehouse_value:

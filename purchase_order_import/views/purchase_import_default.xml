@@ -6,7 +6,8 @@
             <field name="model">purchase.import.default</field>
             <field name="arch" type="xml">
                  <tree string="Default Tree" editable="bottom">
-                    <field name="company_id"/> 
+                    <field name="company_id"/>
+                    <field name="invoice_method"/>
                     <field name="supplier_invoice_journal_id" domain="[('type','=','purchase'),('company_id','=',company_id)]"/>
                     <field name="supplier_payment_journal_id" domain="['|',('type','=','cash'),('type','=','bank'),('company_id','=',company_id)]"/>
                  </tree>

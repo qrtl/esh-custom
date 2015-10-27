@@ -24,9 +24,9 @@
     'website': 'www.openerp-asia.net',
     'description': """ 
 Imports purchase data and processes the following:
-- purchase order creation
-- supplier invoice creation
-- payment creation
+ - purchase order creation
+ - supplier invoice creation
+ - payment creation
     """,
     'summary':""" Import purchase data""",
     'data': [
