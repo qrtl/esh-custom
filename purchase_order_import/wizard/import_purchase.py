@@ -47,7 +47,7 @@ class import_purchase(models.TransientModel):
             return default_rec.supplier_payment_journal_id
 
 
-    input_file = fields.Binary('Purchase Order File (.xlsx Format)', required=True)
+    input_file = fields.Binary('Purchase Order File (.csv Format)', required=True)
     datas_fname = fields.Char('File Path')
     invoice_method = fields.Selection([
         ('manual', 'Based on Purchase Order lines'),

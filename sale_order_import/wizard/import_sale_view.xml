@@ -22,7 +22,7 @@
             <field name="arch" type="xml">
                 <form string="Import">
                     <separator string="Import Sale Orders"/>
-                    <label string="This wizard will create sale orders using sale order .xlsx file. It will also validate sale order, validate invoice and pay invoice."/>
+                    <label string="This wizard will create sales orders using imported .csv file. It will also validate sales order, validate invoice and pay the invoice."/>
                     <group>
                         <group>
                             <field name="input_file" filename="datas_fname" />
