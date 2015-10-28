@@ -57,7 +57,6 @@ class import_sale(models.TransientModel):
         if default_rec:
             return default_rec.customer_payment_journal_id
 
-
     input_file = fields.Binary('Sale Order File (.csv Format)', required=True)
     datas_fname = fields.Char('File Path')
     picking_policy = fields.Selection([
@@ -75,7 +74,6 @@ class import_sale(models.TransientModel):
     customer_payment_journal_id = fields.Many2one('account.journal',
                 required=True, string='Customer Payment Journal',
                 default=_get_customer_payment_journal_id)
-
 
     @api.model
     def _get_partner_dict(self, partner_value, partner_dict, error_line_vals):
@@ -127,6 +125,14 @@ class import_sale(models.TransientModel):
                 error_line_vals['error'] = True
             else:
                 taxes.append(tax.id)
+
+    @api.model
+    def _check_csv_format(self, row):
+        for r in row:
+            try:
+                r.decode('utf-8')
+            except:
+                raise Warning(_('Import Error!'),_('Please prepare a CSV file with UTF-8 encoding.!'))
 
     @api.model
     def _update_error_log(self, error_log_id, error_line_vals, ir_attachment, model, row_no, order_group_value):
@@ -253,6 +259,9 @@ class import_sale(models.TransientModel):
                             check_list.append(r)
                     if not bool(row[order_group].strip()) and not check_list:
                         continue                
+
+                if line == 2:#Check for UTF-8 Format. Only for first line i.e. line=2.
+                    self._check_csv_format(row)
 
                 error_line_vals = {'error_name' : '', 'error': False}
                 partner_value = row[partner_id].strip()

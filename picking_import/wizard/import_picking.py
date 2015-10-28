@@ -32,7 +32,7 @@ from openerp.exceptions import except_orm, Warning, RedirectWarning
 class import_picking(models.TransientModel):
     _name = 'import.picking'
     
-    input_file = fields.Binary('Sale Order File (.xlsx Format)', required=True)
+    input_file = fields.Binary('Import Picking File (.CSV Format)', required=True)
     datas_fname = fields.Char('File Path')
     picking_type = fields.Selection([('purchase', 'Purchase'), ('sale', 'Sale')], string='Picking Type', required=True)
 
@@ -60,7 +60,14 @@ class import_picking(models.TransientModel):
                                         'log_id' : error_log_id
                                     })
         return error_log_id
-    
+
+    @api.model
+    def _check_csv_format(self, row):
+        for r in row:
+            try:
+                r.decode('utf-8')
+            except:
+                raise Warning(_('Import Error!'),_('Please prepare a CSV file with UTF-8 encoding.!'))
     
     @api.model
     def _process_purchase_invoice(self, picking, order_id):
@@ -266,6 +273,9 @@ class import_picking(models.TransientModel):
                     continue
                 order_number = row[number].strip()
                 error_line_vals = {'error_name' : '', 'error': False}
+
+                if line == 2:#Check for UTF-8 Format. Only for first line i.e. line=2.
+                    self._check_csv_format(row)
 
                 if order_number:
                     if self.picking_type == 'sale':
