@@ -110,6 +110,14 @@ class import_purchase(models.TransientModel):
                 taxes.append(tax.id)
 
     @api.model
+    def _check_csv_format(self, row):
+        for r in row:
+            try:
+                r.decode('utf-8')
+            except:
+                raise Warning(_('Import Error!'),_('Please prepare a CSV file with UTF-8 encoding.!'))
+
+    @api.model
     def _update_error_log(self, error_log_id, error_line_vals, ir_attachment, model, row_no, order_group_value):
         if not error_log_id and error_line_vals['error']:
             error_log_id = self.env['error.log'].create({'input_file': ir_attachment.id,
@@ -230,6 +238,9 @@ class import_purchase(models.TransientModel):
                             check_list.append(r)
                 if not bool(row[order_group].strip()) and not check_list:
                     continue
+
+                if line == 2:#Check for UTF-8 Format. Only for first line i.e. line=2.
+                    self._check_csv_format(row)
                 
                 error_line_vals = {'error_name' : '', 'error': False}
                 partner_value = row[partner_id].strip()
