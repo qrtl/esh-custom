@@ -21,7 +21,7 @@ import StringIO
 from tempfile import TemporaryFile
 from datetime import datetime
 import base64
-import xlrd
+# import xlrd
 import sys
 import urllib
 

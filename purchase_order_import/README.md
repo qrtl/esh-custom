@@ -3,7 +3,7 @@ Purchase Data Import
 
 This module provides following functions:
 
-* Imports purchase data of designated format from `.xlsx` file, and creates following transactions:
+* Imports purchase data of designated format from `.csv` file, and creates following transactions:
  * Purchase order
  * Supplier invoice
  * Supplier payment
@@ -14,7 +14,6 @@ This module depends on `base_import_log` module.
 Installation
 ============
 
-* Install `python-xlrd` in the Odoo server before installing the module.
 * Place this module and `base_import_log` module in your addons directory, update the module list in Odoo, and install this module.  `base_import_log` module should be automatically installed when you install this module. 
 
 
@@ -22,7 +21,10 @@ Configuration
 =============
 
 * User should belong to 'Data Import' group.  Adjust the user access right settings as necessary.
-* Select default journals (invoice journal and payment journal) in "Purchase Import Defaults" screen.  The values are used to propose journals in "Purchase Data Import" wizard.
+* Set default values of the wizard in "Purchase Import Defaults" screen.
+ * Invoicing Control
+ * Invoice Journal
+ * Payment Journal
 
 
 Usage

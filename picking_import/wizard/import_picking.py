@@ -22,7 +22,7 @@ from tempfile import TemporaryFile
 from openerp import models, fields, api, _
 from datetime import datetime
 import base64
-import xlrd
+# import xlrd
 from openerp import tools
 import sys
 import urllib

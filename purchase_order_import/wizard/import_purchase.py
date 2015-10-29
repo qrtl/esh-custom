@@ -20,7 +20,7 @@ import csv
 from datetime import datetime
 from tempfile import TemporaryFile
 import base64
-import xlrd
+# import xlrd
 import sys
 from openerp.exceptions import except_orm, Warning, RedirectWarning
 
