@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-21 01:02+0000\n"
-"PO-Revision-Date: 2015-10-21 01:02+0000\n"
+"POT-Creation-Date: 2015-10-30 11:10+0000\n"
+"PO-Revision-Date: 2015-10-30 11:10+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,27 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: purchase_order_import
+#: selection:import.purchase,invoice_method:0
+#: selection:purchase.import.default,invoice_method:0
+msgid "Based on Purchase Order lines"
+msgstr "発注明細基準"
+
+#. module: purchase_order_import
+#: selection:import.purchase,invoice_method:0
+#: selection:purchase.import.default,invoice_method:0
+msgid "Based on generated draft invoice"
+msgstr "生成ドラフト請求書基準"
+
+#. module: purchase_order_import
+#: selection:import.purchase,invoice_method:0
+#: selection:purchase.import.default,invoice_method:0
+msgid "Based on incoming shipments"
+msgstr "入荷基準"
+
+#. module: purchase_order_import
 #: view:import.purchase:purchase_order_import.view_purchase_import_wizard
 msgid "Cancel"
 msgstr "取消"
-
-#. module: purchase_order_import
-#: model:ir.model,name:purchase_order_import.model_res_company
-msgid "Companies"
-msgstr "会社"
 
 #. module: purchase_order_import
 #: sql_constraint:purchase.import.default:0
@@ -58,8 +71,8 @@ msgid "Error Logs"
 msgstr "エラーログ"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:166
-#: code:addons/purchase_order_import/wizard/import_purchase.py:169
+#: code:addons/purchase_order_import/wizard/import_purchase.py:177
+#: code:addons/purchase_order_import/wizard/import_purchase.py:180
 #, python-format
 msgid "Error!"
 msgstr "エラー！"
@@ -81,10 +94,7 @@ msgid "Import"
 msgstr "インポート"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:175
-#: code:addons/purchase_order_import/wizard/import_purchase.py:177
-#: code:addons/purchase_order_import/wizard/import_purchase.py:180
-#: code:addons/purchase_order_import/wizard/import_purchase.py:182
+#: code:addons/purchase_order_import/wizard/import_purchase.py:118
 #, python-format
 msgid "Import Error!"
 msgstr "インポートエラー！"
@@ -111,6 +121,12 @@ msgid "Imported Order?"
 msgstr "インポートされたオーダー"
 
 #. module: purchase_order_import
+#: field:import.purchase,invoice_method:0
+#: field:purchase.import.default,invoice_method:0
+msgid "Invoicing Control"
+msgstr "請求書制御"
+
+#. module: purchase_order_import
 #: field:import.purchase,write_uid:0
 #: field:purchase.import.default,write_uid:0
 msgid "Last Updated by"
@@ -128,19 +144,19 @@ msgid "Order Reference"
 msgstr "オーダー参照"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:182
+#: code:addons/purchase_order_import/wizard/import_purchase.py:118
 #, python-format
-msgid "Please check your xlsx file, it seems it contains more than one sheet."
-msgstr "インポートファイルには複数のシートをもたないようにしてください。"
+msgid "Please prepare a CSV file with UTF-8 encoding.!"
+msgstr "UTF-8エンコーディングの.csvファイルを用意してください。"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:166
+#: code:addons/purchase_order_import/wizard/import_purchase.py:177
 #, python-format
 msgid "Please select Supplier Invoice Journal."
 msgstr "仕入先請求書仕訳帳を選択してください。"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:169
+#: code:addons/purchase_order_import/wizard/import_purchase.py:180
 #, python-format
 msgid "Please select Supplier Payment Journal."
 msgstr "仕入先支払仕訳帳を選択してください。"
@@ -157,8 +173,8 @@ msgstr "発注"
 
 #. module: purchase_order_import
 #: field:import.purchase,input_file:0
-msgid "Purchase Order File (.xlsx Format)"
-msgstr "購買データファイル(.xlsxフォーマット)"
+msgid "Purchase Order File (.csv Format)"
+msgstr "購買データファイル(.csvフォーマット)"
 
 #. module: purchase_order_import
 #: view:error.log:purchase_order_import.import_error_log_form_purchase
@@ -189,16 +205,11 @@ msgstr "仕入先支払仕訳帳"
 
 #. module: purchase_order_import
 #: view:import.purchase:purchase_order_import.view_purchase_import_wizard
-msgid "This wizard will create purchase orders using purchase order .xlsx file. It will also validate purchase order, validate invoice and pay invoice."
-msgstr "このウィザードより.xlsx形式のファイルを取り込み、購買トランザクション（発注、仕入先請求書、仕入先支払）を自動作成します。"
-
-#. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:180
-#, python-format
-msgid "Wrong file format. Please enter .xlsx file."
-msgstr "ファイルフォーマットが正しくありません。.xlsx形式としてください。"
+msgid "This wizard will create purchase orders using imported .csv file. It will also validate purchase order, validate invoice and pay the invoice."
+msgstr "このウィザードは、インポートされた.csvファイルを使って発注を作成します。また、発注確認、請求書の検証、請求書の支払を行います。"
 
 #. module: purchase_order_import
 #: view:import.purchase:purchase_order_import.view_purchase_import_wizard
 msgid "or"
 msgstr "または"
+
