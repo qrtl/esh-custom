@@ -22,7 +22,7 @@ Configuration
 
 * User should belong to 'Data Import' group.  Adjust the user access right settings from `Settings > Users > (the user) > Access Rights > Technical Settings`.
 * Select default journals ('Invoice Journal' and 'Payment Journal') in "Purchase Import Defaults" screen.  The values are used to propose journals in "Purchase Data Import" wizard.
-* Selece default 'Invoicing Control' in "Purchase Import Defaults" screen.  If select other than 'Based on generated draft invoice', cannot complete validation of invoices and payments. 
+* Selece default 'Invoicing Control' in "Purchase Import Defaults" screen.  If other than 'Based on generated draft invoice' is selected, supplier invoice and payment will not be created. 
 
 
 Usage
