@@ -4,10 +4,10 @@ Sales Data Import
 This module provides following functions:
 
 * Imports sales data of designated format from `.csv` file (with UTF-8 encoding), and processes following transactions:
- * Sales Order creation
+ * Sales Order
  * Availability check on outgoing picking
- * Customer Invoice creation
- * Customer Payment creation
+ * Customer Invoice
+ * Customer Payment
  
 This module depends on `base_import_log` module.
  
@@ -48,7 +48,7 @@ Program Logic
  * 'Pricelist'
  * 'Warehouse'
  * 'Notes'
-  Records for import should prepared from the second line onwards.
+* Records for import should be prepared from the second line onwards.
 * "Group" values should be used to separate sales orders.
 * Products are identified based on "Internal Reference" (`default_code`).
 * Customers are identified based on "Name".
