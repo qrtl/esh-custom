@@ -23,7 +23,7 @@ Configuration
 
 * User should belong to 'Data Import' group.  Adjust the user access right settings from `Settings > Users > (the user) > Access Rights > Technical Settings`.
 * Select default journals ('Invoice Journal' and 'Payment Journal') in "Sales Import Defaults" screen.  The values are used to propose journals in "Sales Data Import" wizard.
-* Selece default 'Shipping Policy' and 'Create Invoice' in "Sales Import Defaults" screen.  If select 'On Delivery Order' of 'Create Invoice', cannot complete validation of invoices and payments. 
+* Selece default 'Shipping Policy' and 'Create Invoice' in "Sales Import Defaults" screen.  If 'On Delivery Order' or 'Create Invoice' is selected, customer invoice and payment will not be created.
 
 
 Usage
