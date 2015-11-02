@@ -20,7 +20,7 @@
     'category': 'Warehouse Management',
     'version': '8.0.1.0',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['stock', 'base_import_log', 'sale_order_import', 'purchase_order_import'],
+    'depends': ['stock', 'base_import_log'],
     'website': 'www.openerp-asia.net',
     'description': """ 
 Import stock picking data.

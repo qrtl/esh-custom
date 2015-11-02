@@ -219,6 +219,11 @@ class import_picking(models.TransientModel):
                             error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State: ' + picking.state + ' Not Ready to Transfer! \n'
                             error_line_vals['error'] = True
                             error_line_vals.update({'picking_type':'purchase'})
+                    else:
+                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + picking.state + '\n'
+                        error_line_vals['error'] = True
+                        error_line_vals.update({'picking_type':'purchase' })
+
         return picking_ids
 
     @api.model
@@ -243,6 +248,11 @@ class import_picking(models.TransientModel):
                             error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + 'Waiting Availibility ' + ' so picking could not be transferred. Please make sure stock is available in warehouse to process this picking.\n'
                             error_line_vals['error'] = True
                             error_line_vals.update({'picking_type':'sale' })
+                    else:
+                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + picking.state + '\n'
+                        error_line_vals['error'] = True
+                        error_line_vals.update({'picking_type':'sale' })
+
         return picking_ids
                     
 
@@ -284,6 +294,10 @@ class import_picking(models.TransientModel):
                     else:
                         successed_picking_ids = self._purchase_picking_process(order_number, error_line_vals)
                         purchase_picking_ids.extend(successed_picking_ids)
+                else:
+                    error_line_vals['error_name'] = 'Order Number is empty at Line:' + str(line)
+                    error_line_vals['error'] = True
+                    error_line_vals.update({'picking_type': self.picking_type })
 
                 error_log_id = self._update_error_log(error_log_id, error_line_vals, ir_attachment, model, line, order_number)
             if not error_log_id:
