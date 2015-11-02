@@ -1,0 +1,155 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* picking_import
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-30 11:11+0000\n"
+"PO-Revision-Date: 2015-10-30 11:11+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: picking_import
+#: view:import.picking:picking_import.view_picking_import_wizard
+msgid "Cancel"
+msgstr "取消"
+
+#. module: picking_import
+#: field:import.picking,create_uid:0
+msgid "Created by"
+msgstr "作成者"
+
+#. module: picking_import
+#: field:import.picking,create_date:0
+msgid "Created on"
+msgstr "作成日"
+
+#. module: picking_import
+#: view:error.log:picking_import.import_error_log_form_sale
+msgid "Error Logs"
+msgstr "エラーログ"
+
+#. module: picking_import
+#: field:import.picking,datas_fname:0
+msgid "File Path"
+msgstr "ファイルパス"
+
+#. module: picking_import
+#: field:import.picking,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: picking_import
+#: view:import.picking:picking_import.view_picking_import_wizard
+msgid "Import"
+msgstr "インポート"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:70
+#, python-format
+msgid "Import Error!"
+msgstr "インポートエラー！"
+
+#. module: picking_import
+#: field:stock.picking,purchase_error_log_id:0
+#: field:stock.picking,sale_error_log_id:0
+msgid "Import Log"
+msgstr "インポートログ"
+
+#. module: picking_import
+#: model:ir.actions.act_window,name:picking_import.action_import_picking
+msgid "Import Picking"
+msgstr "ピッキングデータをインポート"
+
+#. module: picking_import
+#: field:import.picking,input_file:0
+msgid "Import Picking File (.CSV Format)"
+msgstr "ピッキングデータファイル(.csvフォーマット)"
+
+#. module: picking_import
+#: view:import.picking:picking_import.view_picking_import_wizard
+#: model:ir.ui.menu,name:picking_import.picking_import_wiz_menu
+msgid "Import Pickings"
+msgstr "ピッキングデータをインポート"
+
+#. module: picking_import
+#: field:stock.picking,imported_order:0
+msgid "Imported Order?"
+msgstr "インポートされたオーダー"
+
+#. module: picking_import
+#: field:import.picking,write_uid:0
+msgid "Last Updated by"
+msgstr "最終更新者"
+
+#. module: picking_import
+#: field:import.picking,write_date:0
+msgid "Last Updated on"
+msgstr "最終更新日"
+
+#. module: picking_import
+#: field:stock.picking,order_ref:0
+msgid "Order Reference"
+msgstr "オーダー参照"
+
+#. module: picking_import
+#: model:ir.model,name:picking_import.model_stock_picking
+msgid "Picking List"
+msgstr "ピッキングリスト"
+
+#. module: picking_import
+#: field:error.log,picking_type:0
+#: field:import.picking,picking_type:0
+msgid "Picking Type"
+msgstr "ピッキングタイプ"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:70
+#, python-format
+msgid "Please prepare a CSV file with UTF-8 encoding.!"
+msgstr "UTF-8エンコーディングの.csvファイルを用意してください!"
+
+#. module: picking_import
+#: selection:error.log,picking_type:0
+#: selection:import.picking,picking_type:0
+msgid "Purchase"
+msgstr "入荷"
+
+#. module: picking_import
+#: view:error.log:picking_import.import_error_log_form_sale
+msgid "Purchase Pickings"
+msgstr "入荷"
+
+#. module: picking_import
+#: field:error.log,purchase_picking_ids:0
+#: field:error.log,sale_picking_ids:0
+msgid "Related Picking"
+msgstr "関連したピッキング"
+
+#. module: picking_import
+#: selection:error.log,picking_type:0
+#: selection:import.picking,picking_type:0
+msgid "Sale"
+msgstr "出荷"
+
+#. module: picking_import
+#: view:error.log:picking_import.import_error_log_form_sale
+msgid "Sale Pickings"
+msgstr "出荷"
+
+#. module: picking_import
+#: view:import.picking:picking_import.view_picking_import_wizard
+msgid "This wizard will process the stock picking."
+msgstr "このウィザードはピッキングオーダの転送を行います。"
+
+#. module: picking_import
+#: view:import.picking:picking_import.view_picking_import_wizard
+msgid "or"
+msgstr "または"
+
