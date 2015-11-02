@@ -48,7 +48,7 @@ Program Logic
  * 'Pricelist'
  * 'Warehouse'
  * 'Notes'
-  Records for import should prepared from the second line onwards.
+* Records for import should be prepared from the second line onwards.
 * "Group" values should be used to separate purchase orders.
 * Products are identified based on "Internal Reference" (`default_code`).
 * Suppliers are identified based on "Name".
