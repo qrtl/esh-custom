@@ -6,14 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-30 11:11+0000\n"
-"PO-Revision-Date: 2015-10-30 11:11+0000\n"
+"POT-Creation-Date: 2015-11-03 08:57+0000\n"
+"PO-Revision-Date: 2015-11-03 08:57+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:83
+#: code:addons/sale_order_import/wizard/import_sale.py:93
+#: code:addons/sale_order_import/wizard/import_sale.py:103
+#: code:addons/sale_order_import/wizard/import_sale.py:112
+#: code:addons/sale_order_import/wizard/import_sale.py:124
+#, python-format
+msgid " Not Found!"
+msgstr " 見つかりません!"
 
 #. module: sale_order_import
 #: selection:import.sale,order_policy:0
@@ -161,10 +171,40 @@ msgid "Order Reference"
 msgstr "オーダー参照"
 
 #. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:83
+#, python-format
+msgid "Partner: "
+msgstr "顧客: "
+
+#. module: sale_order_import
 #: code:addons/sale_order_import/wizard/import_sale.py:135
 #, python-format
 msgid "Please prepare a CSV file with UTF-8 encoding.!"
 msgstr "UTF-8エンコーディングの.csvファイルを用意してください!"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:295
+#, python-format
+msgid "Price Unit not less then zero!"
+msgstr "単価が負の値になっています!"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:103
+#, python-format
+msgid "Pricelist: "
+msgstr "価格表: "
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:93
+#, python-format
+msgid "Product: "
+msgstr "製品: "
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:290
+#, python-format
+msgid "Quantity not less then zero!"
+msgstr "数量が負の値になっています!"
 
 #. module: sale_order_import
 #: field:error.log,sale_order_ids:0
@@ -199,9 +239,21 @@ msgid "Shipping Policy"
 msgstr "出荷方針"
 
 #. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:124
+#, python-format
+msgid "Tax: "
+msgstr "税: "
+
+#. module: sale_order_import
 #: view:import.sale:sale_order_import.view_sale_import_wizard
 msgid "This wizard will create sales orders using imported .csv file. It will also validate sales order, validate invoice and pay the invoice."
 msgstr "このウィザードは、インポートされた.csvファイルを使って受注を作成します。また、受注確認、請求書の検証、請求書の支払を行います。"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:112
+#, python-format
+msgid "Warehouse: "
+msgstr "倉庫: "
 
 #. module: sale_order_import
 #: view:import.sale:sale_order_import.view_sale_import_wizard
