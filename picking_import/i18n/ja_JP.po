@@ -6,14 +6,33 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-30 11:11+0000\n"
-"PO-Revision-Date: 2015-10-30 11:11+0000\n"
+"POT-Creation-Date: 2015-11-03 05:36+0000\n"
+"PO-Revision-Date: 2015-11-03 05:36+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:205
+#: code:addons/picking_import/wizard/import_picking.py:234
+#, python-format
+msgid " Not Found!"
+msgstr " 見つかりません!"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:219
+#, python-format
+msgid " Not Ready to Transfer!"
+msgstr " 移動待ちではありません!"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:248
+#, python-format
+msgid " so picking could not be transferred. Please make sure stock is available in warehouse to process this picking."
+msgstr " ピッキングを転送できませんでした。倉庫で在庫が利用可能であることを確認してください。"
 
 #. module: picking_import
 #: view:import.picking:picking_import.view_picking_import_wizard
@@ -94,14 +113,36 @@ msgid "Last Updated on"
 msgstr "最終更新日"
 
 #. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:298
+#, python-format
+msgid "Order Number is empty at Line: "
+msgstr "次の行でオーダー番号が空です: "
+
+#. module: picking_import
 #: field:stock.picking,order_ref:0
 msgid "Order Reference"
 msgstr "オーダー参照"
 
 #. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:205
+#: code:addons/picking_import/wizard/import_picking.py:234
+#, python-format
+msgid "Order: "
+msgstr "オーダー: "
+
+#. module: picking_import
 #: model:ir.model,name:picking_import.model_stock_picking
 msgid "Picking List"
 msgstr "ピッキングリスト"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:219
+#: code:addons/picking_import/wizard/import_picking.py:223
+#: code:addons/picking_import/wizard/import_picking.py:248
+#: code:addons/picking_import/wizard/import_picking.py:252
+#, python-format
+msgid "Picking State is "
+msgstr "ピッキングのステータス: "
 
 #. module: picking_import
 #: field:error.log,picking_type:0
@@ -147,6 +188,12 @@ msgstr "出荷"
 #: view:import.picking:picking_import.view_picking_import_wizard
 msgid "This wizard will process the stock picking."
 msgstr "このウィザードはピッキングオーダの転送を行います。"
+
+#. module: picking_import
+#: code:addons/picking_import/wizard/import_picking.py:248
+#, python-format
+msgid "Waiting Availibility "
+msgstr "利用可能待ち "
 
 #. module: picking_import
 #: view:import.picking:picking_import.view_picking_import_wizard

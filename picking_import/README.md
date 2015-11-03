@@ -19,7 +19,7 @@ Installation
 Configuration
 =============
 
-* User should belong to 'Data Import' group.  Adjust the user access right settings as necessary.
+* User should belong to 'Data Import' group.  Adjust the user access right settings from `Settings > Users > (the user) > Access Rights > Technical Settings`.
 
 
 Usage
@@ -33,6 +33,6 @@ Go to `Import > Data Import Log > Import Log` to find the import history / error
 Program Logic
 -------------
 
-* The first line of the import file is a field label.  Records for import should be prepared from the second line onwards.
+* The first line of the import file is a field label 'Number'.  Records for import should be prepared from the second line onwards.
 * "Number" values are identified based on "Order Number" of the purchase/sales orders.  Select "Puchase/Sales" as "Picking Type" in the "Import Pickings" wizard.
 * The program should not create any record if there is an error in any of the records.  User is expected to find the error content in the error log, correct all the errors in the import file, and re-import it.

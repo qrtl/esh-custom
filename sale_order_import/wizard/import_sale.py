@@ -80,7 +80,7 @@ class import_sale(models.TransientModel):
         if partner_value not in partner_dict.keys():
             partner = self.env['res.partner'].search([('name', '=', partner_value)])
             if not partner:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Partner: ' + partner_value + ' Not Found! \n'
+                error_line_vals['error_name'] = error_line_vals['error_name'] + _('Partner: ') + partner_value + _(' Not Found!') + '\n'
                 error_line_vals['error'] = True
             else:
                 partner_dict[partner_value] = partner.id
@@ -90,7 +90,7 @@ class import_sale(models.TransientModel):
         if product_id_value not in product_dict.keys():
             product = self.env['product.product'].search([('default_code', '=', product_id_value)])
             if not product:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Product: ' + product_id_value + ' Not Found! \n'
+                error_line_vals['error_name'] = error_line_vals['error_name'] + _('Product: ') + product_id_value + _(' Not Found!') + '\n'
                 error_line_vals['error'] = True
             else:
                 product_dict[product_id_value] = product.id
@@ -100,7 +100,7 @@ class import_sale(models.TransientModel):
         if pricelist_value not in pricelist_dict.keys():
             pricelist = self.env['product.pricelist'].search([('name', '=', pricelist_value)])
             if not pricelist:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Pricelist: ' + pricelist_value + ' Not Found! \n'
+                error_line_vals['error_name'] = error_line_vals['error_name'] + _('Pricelist: ') + pricelist_value + _(' Not Found!') + '\n'
                 error_line_vals['error'] = True
             else:
                 pricelist_dict[pricelist_value] = pricelist.id
@@ -109,7 +109,7 @@ class import_sale(models.TransientModel):
     def _get_picking_dict(self, warehouse_value, picking_dict, error_line_vals):
         warehouse_id = self.env['stock.warehouse'].search([('name','=',warehouse_value)]).id
         if not warehouse_id:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Warehouse: ' + warehouse_value + ' Not Found! \n'
+            error_line_vals['error_name'] = error_line_vals['error_name'] + _('Warehouse: ') + warehouse_value + _(' Not Found!') + '\n'
             error_line_vals['error'] = True
         else:
             picking_type = self.env['stock.picking.type'].search([('warehouse_id','=',warehouse_id),('code','=','outgoing')])
@@ -121,7 +121,7 @@ class import_sale(models.TransientModel):
         for tax_name in tax_name_list:
             tax = self.env['account.tax'].search([('name', '=', tax_name)])
             if not tax:
-                error_line_vals['error_name'] = error_line_vals['error_name'] + 'Tax: ' + tax_name + ' Not Found! \n'
+                error_line_vals['error_name'] = error_line_vals['error_name'] + _('Tax: ') + tax_name + _(' Not Found!') + '\n'
                 error_line_vals['error'] = True
             else:
                 taxes.append(tax.id)
@@ -287,12 +287,12 @@ class import_sale(models.TransientModel):
 
                 qty = float(row[product_qty].strip())
                 if qty < 0:
-                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Quantity not less then zero! \n'
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Quantity not less then zero!') + '\n'
                     error_line_vals['error'] = True
                 
                 price_unit_value = float(row[price_unit].strip())
                 if price_unit_value < 0:
-                    error_line_vals['error_name'] = error_line_vals['error_name'] + 'Price Unit not less then zero! \n'
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Price Unit not less then zero!') + '\n'
                     error_line_vals['error'] = True
                 
                 order_policy = self.order_policy

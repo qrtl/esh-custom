@@ -202,7 +202,7 @@ class import_picking(models.TransientModel):
         order_id = self.env['purchase.order'].search([('name', 'ilike', order_number)])
         picking_ids = []
         if not order_id:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Order: ' + order_number + ' Not Found! \n'
+            error_line_vals['error_name'] = error_line_vals['error_name'] + _('Order: ') + order_number + _(' Not Found!') + '\n'
             error_line_vals['error'] = True
             error_line_vals.update({'picking_type':'purchase'})
         else:
@@ -216,11 +216,11 @@ class import_picking(models.TransientModel):
                             if picking.invoice_state == '2binvoiced':
                                 self._process_purchase_invoice(picking, order_id)
                         else:
-                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State: ' + picking.state + ' Not Ready to Transfer! \n'
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + _('Picking State is ') + picking.state + _(' Not Ready to Transfer!') + '\n'
                             error_line_vals['error'] = True
                             error_line_vals.update({'picking_type':'purchase'})
                     else:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + picking.state + '\n'
+                        error_line_vals['error_name'] = error_line_vals['error_name'] + _('Picking State is ') + picking.state + '\n'
                         error_line_vals['error'] = True
                         error_line_vals.update({'picking_type':'purchase' })
 
@@ -231,7 +231,7 @@ class import_picking(models.TransientModel):
         order_id = self.env['sale.order'].search([('name', 'ilike', order_number)])
         picking_ids = []
         if not order_id:
-            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Order: ' + order_number + ' Not Found! \n'
+            error_line_vals['error_name'] = error_line_vals['error_name'] + _('Order: ') + order_number + _(' Not Found!') + '\n'
             error_line_vals['error'] = True
             error_line_vals.update({'picking_type':'sale'})
         else:
@@ -245,11 +245,11 @@ class import_picking(models.TransientModel):
                             if picking.invoice_state == '2binvoiced':
                                 self._process_sale_invoice(picking, order_id)
                         else:
-                            error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + 'Waiting Availibility ' + ' so picking could not be transferred. Please make sure stock is available in warehouse to process this picking.\n'
+                            error_line_vals['error_name'] = error_line_vals['error_name'] + _('Picking State is ') + _('Waiting Availibility ') + _(' so picking could not be transferred. Please make sure stock is available in warehouse to process this picking.') + '\n'
                             error_line_vals['error'] = True
                             error_line_vals.update({'picking_type':'sale' })
                     else:
-                        error_line_vals['error_name'] = error_line_vals['error_name'] + 'Picking State is ' + picking.state + '\n'
+                        error_line_vals['error_name'] = error_line_vals['error_name'] + _('Picking State is ') + picking.state + '\n'
                         error_line_vals['error'] = True
                         error_line_vals.update({'picking_type':'sale' })
 
@@ -295,7 +295,7 @@ class import_picking(models.TransientModel):
                         successed_picking_ids = self._purchase_picking_process(order_number, error_line_vals)
                         purchase_picking_ids.extend(successed_picking_ids)
                 else:
-                    error_line_vals['error_name'] = 'Order Number is empty at Line:' + str(line)
+                    error_line_vals['error_name'] = _('Order Number is empty at Line: ') + str(line)
                     error_line_vals['error'] = True
                     error_line_vals.update({'picking_type': self.picking_type })
 
