@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-03 08:57+0000\n"
-"PO-Revision-Date: 2015-11-03 08:57+0000\n"
+"POT-Creation-Date: 2015-11-06 03:01+0000\n"
+"PO-Revision-Date: 2015-11-06 03:01+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -171,6 +171,12 @@ msgid "Order Reference"
 msgstr "オーダー参照"
 
 #. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:269
+#, python-format
+msgid "Partner is empty!"
+msgstr "顧客が空です!"
+
+#. module: sale_order_import
 #: code:addons/sale_order_import/wizard/import_sale.py:83
 #, python-format
 msgid "Partner: "
@@ -183,10 +189,10 @@ msgid "Please prepare a CSV file with UTF-8 encoding.!"
 msgstr "UTF-8エンコーディングの.csvファイルを用意してください!"
 
 #. module: sale_order_import
-#: code:addons/sale_order_import/wizard/import_sale.py:295
+#: code:addons/sale_order_import/wizard/import_sale.py:283
 #, python-format
-msgid "Price Unit not less then zero!"
-msgstr "単価が負の値になっています!"
+msgid "Pricelist is empty!"
+msgstr "価格表が空です!"
 
 #. module: sale_order_import
 #: code:addons/sale_order_import/wizard/import_sale.py:103
@@ -195,16 +201,28 @@ msgid "Pricelist: "
 msgstr "価格表: "
 
 #. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:276
+#, python-format
+msgid "Product is empty!"
+msgstr "製品が空です!"
+
+#. module: sale_order_import
 #: code:addons/sale_order_import/wizard/import_sale.py:93
 #, python-format
 msgid "Product: "
 msgstr "製品: "
 
 #. module: sale_order_import
-#: code:addons/sale_order_import/wizard/import_sale.py:290
+#: code:addons/sale_order_import/wizard/import_sale.py:302
 #, python-format
-msgid "Quantity not less then zero!"
-msgstr "数量が負の値になっています!"
+msgid "Quantity is empty!"
+msgstr "数量が空です!"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:308
+#, python-format
+msgid "Quantity not less than zero!"
+msgstr "数量は0以下の値を取ることはできません!"
 
 #. module: sale_order_import
 #: field:error.log,sale_order_ids:0
@@ -248,6 +266,24 @@ msgstr "税: "
 #: view:import.sale:sale_order_import.view_sale_import_wizard
 msgid "This wizard will create sales orders using imported .csv file. It will also validate sales order, validate invoice and pay the invoice."
 msgstr "このウィザードは、インポートされた.csvファイルを使って受注を作成します。また、受注確認、請求書の検証、請求書の支払を行います。"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:313
+#, python-format
+msgid "Unit Price is empty!"
+msgstr "単価が空です!"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:319
+#, python-format
+msgid "Unit Price not less than zero!"
+msgstr "単価は0以下の値を取ることはできません!"
+
+#. module: sale_order_import
+#: code:addons/sale_order_import/wizard/import_sale.py:290
+#, python-format
+msgid "Warehouse is empty!"
+msgstr "倉庫は空です!"
 
 #. module: sale_order_import
 #: code:addons/sale_order_import/wizard/import_sale.py:112

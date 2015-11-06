@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-03 05:36+0000\n"
-"PO-Revision-Date: 2015-11-03 05:36+0000\n"
+"POT-Creation-Date: 2015-11-06 02:03+0000\n"
+"PO-Revision-Date: 2015-11-06 02:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr " 見つかりません!"
 #: code:addons/picking_import/wizard/import_picking.py:219
 #, python-format
 msgid " Not Ready to Transfer!"
-msgstr " 移動待ちではありません!"
+msgstr " 転送の準備ができていません!"
 
 #. module: picking_import
 #: code:addons/picking_import/wizard/import_picking.py:248
@@ -115,8 +115,8 @@ msgstr "最終更新日"
 #. module: picking_import
 #: code:addons/picking_import/wizard/import_picking.py:298
 #, python-format
-msgid "Order Number is empty at Line: "
-msgstr "次の行でオーダー番号が空です: "
+msgid "Order Number is empty!"
+msgstr "オーダー番号が空です!"
 
 #. module: picking_import
 #: field:stock.picking,order_ref:0
@@ -142,7 +142,7 @@ msgstr "ピッキングリスト"
 #: code:addons/picking_import/wizard/import_picking.py:252
 #, python-format
 msgid "Picking State is "
-msgstr "ピッキングのステータス: "
+msgstr "ピッキングのステータスは "
 
 #. module: picking_import
 #: field:error.log,picking_type:0

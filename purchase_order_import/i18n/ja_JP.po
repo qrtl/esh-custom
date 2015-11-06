@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-03 08:57+0000\n"
-"PO-Revision-Date: 2015-11-03 08:57+0000\n"
+"POT-Creation-Date: 2015-11-06 03:01+0000\n"
+"PO-Revision-Date: 2015-11-06 03:01+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -154,6 +154,12 @@ msgid "Order Reference"
 msgstr "オーダー参照"
 
 #. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:248
+#, python-format
+msgid "Partner is empty!"
+msgstr "仕入先が空です!"
+
+#. module: purchase_order_import
 #: code:addons/purchase_order_import/wizard/import_purchase.py:66
 #, python-format
 msgid "Partner: "
@@ -178,16 +184,22 @@ msgid "Please select Supplier Payment Journal."
 msgstr "仕入先支払仕訳帳を選択してください。"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:276
+#: code:addons/purchase_order_import/wizard/import_purchase.py:262
 #, python-format
-msgid "Price Unit not less then zero!"
-msgstr "単価が負の値になっています!"
+msgid "Pricelist is empty!"
+msgstr "価格表が空です!"
 
 #. module: purchase_order_import
 #: code:addons/purchase_order_import/wizard/import_purchase.py:86
 #, python-format
 msgid "Pricelist: "
 msgstr "価格表: "
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:255
+#, python-format
+msgid "Product is empty!"
+msgstr "製品が空です!"
 
 #. module: purchase_order_import
 #: code:addons/purchase_order_import/wizard/import_purchase.py:76
@@ -221,10 +233,16 @@ msgid "Purhcase Import Defaults"
 msgstr "購買データインポートデフォルト"
 
 #. module: purchase_order_import
-#: code:addons/purchase_order_import/wizard/import_purchase.py:271
+#: code:addons/purchase_order_import/wizard/import_purchase.py:283
 #, python-format
-msgid "Quantity not less then zero!"
-msgstr "数量が負の値になっています!"
+msgid "Quantity is empty!"
+msgstr "数量が空です!"
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:289
+#, python-format
+msgid "Quantity not less than zero!"
+msgstr "数量は0以下の値を取ることはできません!"
 
 #. module: purchase_order_import
 #: field:error.log,purchase_order_ids:0
@@ -253,6 +271,24 @@ msgstr "税: "
 #: view:import.purchase:purchase_order_import.view_purchase_import_wizard
 msgid "This wizard will create purchase orders using imported .csv file. It will also validate purchase order, validate invoice and pay the invoice."
 msgstr "このウィザードは、インポートされた.csvファイルを使って発注を作成します。また、発注確認、請求書の検証、請求書の支払を行います。"
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:294
+#, python-format
+msgid "Unit Price is empty!"
+msgstr "単価が空です!"
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:300
+#, python-format
+msgid "Unit Price not less than zero!"
+msgstr "単価は0以下の値を取ることはできません!"
+
+#. module: purchase_order_import
+#: code:addons/purchase_order_import/wizard/import_purchase.py:271
+#, python-format
+msgid "Warehouse is empty!"
+msgstr "倉庫が空です!"
 
 #. module: purchase_order_import
 #: code:addons/purchase_order_import/wizard/import_purchase.py:95

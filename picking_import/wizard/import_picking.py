@@ -47,14 +47,14 @@ class import_picking(models.TransientModel):
                                                         'model_id': model.id,
                                                         'picking_type': error_line_vals['picking_type']}).id
             error_line_id = self.env['error.log.line'].create({
-                                        'row_no' : row_no + 1,
+                                        'row_no' : row_no,
                                         'order_group' : order_group_value,
                                         'error_name': error_line_vals['error_name'],
                                         'log_id' : error_log_id
                                     })
         elif error_line_vals['error']:
             error_line_id = self.env['error.log.line'].create({
-                                        'row_no' : row_no + 1,
+                                        'row_no' : row_no,
                                         'order_group' : order_group_value,
                                         'error_name': error_line_vals['error_name'],
                                         'log_id' : error_log_id
@@ -295,7 +295,7 @@ class import_picking(models.TransientModel):
                         successed_picking_ids = self._purchase_picking_process(order_number, error_line_vals)
                         purchase_picking_ids.extend(successed_picking_ids)
                 else:
-                    error_line_vals['error_name'] = _('Order Number is empty at Line: ') + str(line)
+                    error_line_vals['error_name'] = _('Order Number is empty!') + '\n'
                     error_line_vals['error'] = True
                     error_line_vals.update({'picking_type': self.picking_type })
 
