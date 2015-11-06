@@ -143,14 +143,14 @@ class import_sale(models.TransientModel):
                                                         'state': 'failed',
                                                         'model_id': model.id}).id
             error_line_id = self.env['error.log.line'].create({
-                                        'row_no' : row_no + 1,
+                                        'row_no' : row_no,
                                         'order_group' : order_group_value,
                                         'error_name': error_line_vals['error_name'],
                                         'log_id' : error_log_id
                                     })
         elif error_line_vals['error']:
             error_line_id = self.env['error.log.line'].create({
-                                        'row_no' : row_no + 1,
+                                        'row_no' : row_no,
                                         'order_group' : order_group_value,
                                         'error_name': error_line_vals['error_name'],
                                         'log_id' : error_log_id
@@ -265,19 +265,31 @@ class import_sale(models.TransientModel):
 
                 error_line_vals = {'error_name' : '', 'error': False}
                 partner_value = row[partner_id].strip()
-                if partner_value:
+                if not partner_value:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Partner is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
                     self._get_partner_dict(partner_value, partner_dict, error_line_vals)
                 
                 product_id_value = row[product_id].strip()
-                if product_id_value:
+                if not product_id_value:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Product is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
                     self._get_product_dict(product_id_value, product_dict, error_line_vals)
                 
                 pricelist_value = row[pricelist_id].strip()
-                if pricelist_value:
+                if not pricelist_value:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Pricelist is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
                     self._get_pricelist_dict(pricelist_value, pricelist_dict, error_line_vals)
                 
                 warehouse_value = row[warehouse_id].strip()
-                if warehouse_value:
+                if not warehouse_value:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Warehouse is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
                     self._get_picking_dict(warehouse_value, picking_dict, error_line_vals)
                 
                 taxes = []
@@ -285,14 +297,26 @@ class import_sale(models.TransientModel):
                 if tax_from_chunk:
                     self._get_taxes(tax_from_chunk, taxes, error_line_vals)
 
-                qty = float(row[product_qty].strip())
-                if qty < 0:
-                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Quantity not less then zero!') + '\n'
+                qty = row[product_qty].strip()
+                if not qty:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Quantity is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
+                    qty = float(qty)
+                
+                if qty <= 0:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Quantity not less than zero!') + '\n'
                     error_line_vals['error'] = True
                 
-                price_unit_value = float(row[price_unit].strip())
-                if price_unit_value < 0:
-                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Price Unit not less then zero!') + '\n'
+                price_unit_value = row[price_unit].strip()
+                if not price_unit_value:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Unit Price is empty!') + '\n'
+                    error_line_vals['error'] = True
+                else:
+                    price_unit_value = float(price_unit_value)
+                
+                if price_unit_value <= 0:
+                    error_line_vals['error_name'] = error_line_vals['error_name'] + _('Unit Price not less than zero!') + '\n'
                     error_line_vals['error'] = True
                 
                 order_policy = self.order_policy

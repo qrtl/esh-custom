@@ -22,7 +22,7 @@ class error_log_lines(models.Model):
     _name = 'error.log.line'
 
     error_name =  fields.Text('Error')
-    row_no = fields.Integer('Excel Row Number')
+    row_no = fields.Integer('Row Number')
     order_group = fields.Char('Order Group')
     log_id = fields.Many2one('error.log', string='Log')
     
