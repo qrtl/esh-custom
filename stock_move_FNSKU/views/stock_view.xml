@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_move_picking_form_fnsku" model="ir.ui.view">
+            <field name="name">stock.move.form.fnsku</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="amazon_fnsku"/>
+            </xpath>
+            </field>
+        </record>
+
+        <record id="view_move_picking_tree_fnsku" model="ir.ui.view">
+            <field name="name">stock.move.tree.fnsku</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="amazon_fnsku"/>
+            </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
+

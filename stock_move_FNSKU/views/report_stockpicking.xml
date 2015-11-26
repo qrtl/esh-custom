@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="report_picking_fnsku" inherit_id="stock.report_picking">
+	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/thead/tr/th[@class='text-right']" position="before">
+		<th><strong>FNSKU</strong></th>
+	</xpath>
+	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/tbody/tr[@t-foreach='o.move_lines']/t/td[@class='text-right']" position="before">
+                <td><span t-field="move.amazon_fnsku"/></td>
+        </xpath>
+</template>
+</data>
+</openerp>
+
