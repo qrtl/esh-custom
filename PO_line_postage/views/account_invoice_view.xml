@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form_postage" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.postage</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_unit']" position="after">
+                <field name="postage"/>
+            </xpath>
+
+            </field>
+        </record>
+    </data>
+</openerp>
+

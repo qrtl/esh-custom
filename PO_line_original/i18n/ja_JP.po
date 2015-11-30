@@ -1,0 +1,82 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* PO_line_original
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-29 19:11+0000\n"
+"PO-Revision-Date: 2015-11-29 19:11+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: PO_line_original
+#: view:purchase.order:PO_line_original.purchase__order_form_original
+msgid "(update)"
+msgstr "(更新)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:153
+#: field:purchase.order.line,postage_original:0
+#, python-format
+msgid "Postage (Original)"
+msgstr "送料(交渉前)"
+
+#. module: PO_line_original
+#: model:ir.model,name:PO_line_original.model_purchase_order
+msgid "Purchase Order"
+msgstr "発注"
+
+#. module: PO_line_original
+#: model:ir.model,name:PO_line_original.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "発注明細"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:151
+#: field:purchase.order.line,product_qty_original:0
+#, python-format
+msgid "Quantity (Original)"
+msgstr "数量(交渉前)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:154
+#: field:purchase.order.line,price_subtotal_original:0
+#, python-format
+msgid "Subtotal (Original)"
+msgstr "小計(交渉前)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:96
+#: field:purchase.order,amount_tax_original:0
+#, python-format
+msgid "Taxes (Original)"
+msgstr "税(交渉前)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:100
+#: field:purchase.order,amount_total_original:0
+#, python-format
+msgid "Total (Original)"
+msgstr "合計(交渉前)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:152
+#: field:purchase.order.line,price_unit_original:0
+#, python-format
+msgid "Unit Price (Original)"
+msgstr "単価(交渉前)"
+
+#. module: PO_line_original
+#: code:addons/PO_line_original/models/purchase.py:92
+#: field:purchase.order,amount_untaxed_original:0
+#, python-format
+msgid "Untaxed Amount (Original)"
+msgstr "税抜金額(交渉前)"
+
+
