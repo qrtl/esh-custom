@@ -2,11 +2,27 @@
 <openerp>
 <data>
 <template id="report_picking_fnsku" inherit_id="stock.report_picking">
-	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/thead/tr/th[@class='text-right']" position="before">
+	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/thead/tr/th" position="replace">
+		<th><strong>Internal Reference</strong></th>
 		<th><strong>FNSKU</strong></th>
+		<th><strong>Product Name</strong></th>
 	</xpath>
-	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/tbody/tr[@t-foreach='o.move_lines']/t/td[@class='text-right']" position="before">
+	<xpath expr="//div[@class='page']/table[@t-if='not o.pack_operation_ids']/tbody/tr/t/td" position="replace">
+		<td><span t-field="move.product_id.default_code"/></td>
                 <td><span t-field="move.amazon_fnsku"/></td>
+                <td><span t-field="move.product_id.name"/></td>
+        </xpath>
+        <xpath expr="//div[@class='page']/table[@t-if='o.pack_operation_ids']/thead/tr/th" position="replace">
+                <th><strong>Internal Reference</strong></th>
+                <th><strong>FNSKU</strong></th>
+                <th><strong>Product Name</strong></th>
+        </xpath>
+        <xpath expr="//div[@class='page']/table[@t-if='o.pack_operation_ids']/tbody/tr/td" position="replace">
+                <td><span t-field="pack_operation.product_id.default_code"/></td>
+                <td><span t-field="o.move_lines.amazon_fnsku"/></td>
+                <td><span t-field="pack_operation.product_id.name"/>
+			<t t-if="not pack_operation.product_id and pack_operation.package_id"><span t-field="pack_operation.package_id"/></t>
+		</td>
         </xpath>
 </template>
 </data>

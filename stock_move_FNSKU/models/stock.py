@@ -20,12 +20,15 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from openerp import _
 
 class stock_move(osv.osv):
     _inherit = "stock.move"
     
     _columns = {
         'amazon_fnsku': fields.char('FNSKU'),
+        'product_default_code': fields.related('product_id', 'default_code', type='char', string=_("Internal Reference")),
+        'product_name': fields.related('product_id', 'name', type='char', string=_("Product Name")),
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

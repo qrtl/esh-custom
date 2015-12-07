@@ -22,7 +22,7 @@
 {
     'name': 'Stock Move Add FNSKU',
     'version': '8.0.1.0',
-    'category': 'Sales',
+    'category': 'Warehouse Management',
     'author': 'Rooms For (Hong Kong) Limited T/A OSCG',
     'summary': 'Add a field of Amazon FNSKU in Stock Move',
     'description': """
@@ -31,7 +31,7 @@
     'depends': ["stock"], 
     'data': [
         'views/stock_view.xml',
-	'views/report_stockpicking.xml',
+	    'views/report_stockpicking.xml',
     ],
     'installable': True,
     'application': False,
