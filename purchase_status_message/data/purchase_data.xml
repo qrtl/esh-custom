@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Purchase-related subtypes for messaging / Chatter -->
+        <record id="mt_rfq_draft" model="mail.message.subtype">
+            <field name="name">Draft PO</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_sent" model="mail.message.subtype">
+            <field name="name">RFQ Sent</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_bid" model="mail.message.subtype">
+            <field name="name">Bid Received</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_confirmed" model="mail.message.subtype">
+            <field name="name">Waiting Approval</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_approved" model="mail.message.subtype">
+            <field name="name">Purchase Comfirmed</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_except_picking" model="mail.message.subtype">
+            <field name="name">Shipping Exception</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_except_invoice" model="mail.message.subtype">
+            <field name="name">Invoice Exception</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_done" model="mail.message.subtype">
+            <field name="name">Done</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+        <record id="mt_rfq_cancel" model="mail.message.subtype">
+            <field name="name">Cancelled</field>
+            <field name="default" eval="True"/>
+            <field name="res_model">purchase.order</field>
+        </record>
+    </data>
+</openerp>
