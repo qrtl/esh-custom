@@ -32,7 +32,7 @@
 * Adds above columns in the report of Invoice
 * Adds Variation and Comments fields in Purchase Order Lines
     """,
-    'depends': ["purchase", "account_invoice"], 
+    'depends': ["purchase", "account"], 
     'data': [
         'views/purchase_view.xml',
         'views/account_invoice_view.xml',
