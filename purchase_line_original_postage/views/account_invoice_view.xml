@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form_original" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.original</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='quantity']" position="before">
+                <field name="quantity_original"/>
+                <field name="price_unit_original"/>
+                <field name="postage_original"/>
+                <field name="price_subtotal_original"/>
+            </xpath>
+
+            <xpath expr="//field[@name='price_unit']" position="after">
+                <field name="postage"/>
+            </xpath>
+
+            <xpath expr="//field[@name='price_subtotal']" position="before">
+                <field name="negotiate_fee"/>
+            </xpath>
+
+            </field>
+        </record>
+    </data>
+</openerp>
+
