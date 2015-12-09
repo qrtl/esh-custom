@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="assets_backend_weburl" inherit_id="web.assets_backend" name="Web Url">
+              <xpath expr="." position="inside">
+                <script type="text/javascript" src="/web_url/static/src/js/view_list.js"></script>
+              </xpath>
+            </template>
+    </data>
+</openerp>
