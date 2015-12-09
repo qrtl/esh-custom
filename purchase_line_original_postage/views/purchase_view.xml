@@ -10,16 +10,18 @@
                 <field name="product_id" on_change="onchange_product_id_original(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,False,False,parent.state,context)"/>
             </xpath>
 
-            <xpath expr="//tree[@string='Purchase Order Lines']/field[@name='name']" position="before">
+            <xpath expr="//tree[@string='Purchase Order Lines']/field[@name='name']" position="replace">
                 <field name="variation"/>
                 <field name="advice"/>
+                <field name="name" widget="url"/>
             </xpath>
 
-            <xpath expr="//field[@name='product_qty']" position="before">
+            <xpath expr="//field[@name='product_qty']" position="replace">
             	<field name="product_qty_original"/>
                 <field name="price_unit_original"/>
                 <field name="postage_original"/>
                 <field name="price_subtotal_original"/>
+                <field name="product_qty"/>
             </xpath>
 
             <xpath expr="//field[@name='price_unit']" position="after">
