@@ -19,7 +19,7 @@
         </xpath>
         <xpath expr="//div[@class='page']/table[@t-if='o.pack_operation_ids']/tbody/tr/td" position="replace">
                 <td><span t-field="pack_operation.product_id.default_code"/></td>
-                <td><span t-field="o.move_lines.amazon_fnsku"/></td>
+                <td><span t-field="pack_operation.amazon_fnsku"/></td>
                 <td><span t-field="pack_operation.product_id.name"/>
 			<t t-if="not pack_operation.product_id and pack_operation.package_id"><span t-field="pack_operation.package_id"/></t>
 		</td>

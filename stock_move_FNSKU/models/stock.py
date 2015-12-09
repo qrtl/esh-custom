@@ -31,4 +31,11 @@ class stock_move(osv.osv):
         'product_name': fields.related('product_id', 'name', type='char', string=_("Product Name")),
     }
 
+class stock_pack_operation(osv.osv):
+    _inherit = "stock.pack.operation"
+
+    _columns = {
+        'amazon_fnsku': fields.char('FNSKU'),
+    }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
