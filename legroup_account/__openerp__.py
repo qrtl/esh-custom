@@ -21,7 +21,7 @@
     'category': 'Security',
     'version': '8.0.0.5',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['account',],
+    'depends': ['account_voucher',],
     'website': 'https://www.odoo-asia.com',
     'summary':"""""",
     'description': """ 
