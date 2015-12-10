@@ -1,0 +1,11 @@
+id,group_id/id,name,model_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_account_invoice_leacc,group_le_account,account.invoice.leacc,account.model_account_invoice,1,0,0,0
+access_account_voucher_leacc,group_le_account,account.voucher.leacc,account_voucher.model_account_voucher,1,0,0,0
+access_account_invoice_tax_leacc,group_le_account,account.invoice.tax.leacc,account.model_account_invoice_tax,1,0,0,0
+access_account_move_line_leacc,group_le_account,account.move.line.leacc,account.model_account_move_line,1,0,0,0
+access_account_move_leacc,group_le_account,account.move.leacc,account.model_account_move,1,0,0,0
+access_account_move_reconcile_leacc,group_le_account,account.move.reconcile.leacc,account.model_account_move_reconcile,1,0,0,0
+access_account_journal_leacc,group_le_account,account.journal.leacc,account.model_account_journal,1,0,0,0
+access_account_voucher_line_leacc,group_le_account,account.voucher.line.leacc,account_voucher.model_account_voucher_line,1,0,0,0
+access_account_analytic_line_leacc,group_le_account,account.analytic.line.leacc,account.model_account_analytic_line,1,0,0,0
+access_account_period_leacc,group_le_account,account.period.leacc,account.model_account_period,1,0,0,0
