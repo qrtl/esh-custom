@@ -17,7 +17,7 @@
     "category" : "Tools",
     "depends" : ["web"],
     "data": [
-        "template.xml",
+        "views/template.xml",
     ],
     "auto_install": False,
 }
