@@ -20,20 +20,5 @@
 #
 ##############################################################################
 
-{
-    'name': 'Stock Picking Menu',
-    'version': '8.0.0.5',
-    'author': 'Rooms For (Hong Kong) Ltd T/A OSCG',
-    'website': 'http://www.openerp-asia.net',
-    'category': 'Menu',
-    'depends': ["stock"],
-    'description': """
-* Adds menu items for users to reach picking operation screens quickly.
-* Default proposal of Picking Type is for the first warehouse.
-    """,
-    'data': [
-        'views/stock_view.xml',
-    ],
-    'installable': True,
-}
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+import stock
+

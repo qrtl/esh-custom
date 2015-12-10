@@ -6,18 +6,14 @@
         
         You can send feedback to info@emiprotechnologies.com,
  
-        ---
-
-        This module is originally for V7 and migrated for V8.
-
         """,
     "version": "8.0",
-    "author" : "Emipro Technologies, Rooms For (Hong Kong) Limited T/A OSCG",
+    "author" : "Emipro Technologies, Rooms For Hong Kong Limited T/A OSCG",
     "website" : "http://www.emiprotechnologies.com",
     "category" : "Tools",
     "depends" : ["web"],
     "data": [
-        "views/template.xml",
+        "template.xml",
     ],
     "auto_install": False,
 }
