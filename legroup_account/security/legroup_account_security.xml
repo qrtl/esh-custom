@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+
+<!-- create a new group -->
+<record id="group_le_account" model="res.groups">
+    <field name="name">LeadExpress Accounting</field>
+    <field name="menu_access" eval="[(4, ref('account.menu_finance'))]"/>
+    <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+</record>
+
+
+<!-- adjust existing group(s) -->
+<record id="account.group_account_invoice" model="res.groups">
+    <field name="menu_access" eval="[(4, ref('account.menu_finance_receivables')),
+                                     (4, ref('account.menu_action_invoice_tree4')),
+                                     (4, ref('account_voucher.menu_action_purchase_receipt')),
+                                     (4, ref('account.menu_account_supplier')),
+                                     ]"/>
+</record>
+
+</data>
+</openerp>
