@@ -24,7 +24,7 @@ Usage
 
 Only following menu items should be visible and linked objects to them are read-only for "LeadExpress Accounting" group:
 
-- 'Accounting > Suppliers > Supplier Invoices`
-- 'Accounting > Suppliers > Supplier Payments`
+- `Accounting > Suppliers > Supplier Invoices`
+- `Accounting > Suppliers > Supplier Payments`
 
 User should still be able to send messages in invoices and vouchers by adding themselves as a follower.
