@@ -21,7 +21,7 @@
 ##############################################################################
 
 {
-    'name': 'Stock Picking Menu',
+    'name': 'Stock Picking Menu for EarthShip',
     'version': '8.0.0.5',
     'author': 'Rooms For (Hong Kong) Ltd T/A OSCG',
     'website': 'http://www.openerp-asia.net',
