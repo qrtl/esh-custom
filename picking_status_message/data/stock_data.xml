@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Account-related subtypes for messaging / Chatter -->
+        <record id="mt_picking_done" model="mail.message.subtype">
+            <field name="name">Transferred</field>
+            <field name="res_model">stock.picking</field>
+            <field name="default" eval="True"/>
+        </record>
+
+    </data>
+</openerp>
