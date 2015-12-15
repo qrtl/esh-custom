@@ -77,15 +77,15 @@ class purchase_order(osv.osv):
         return result.keys()
 
     _columns = {
-        'amount_untaxed': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string='Untaxed Amount',
+        'amount_untaxed': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Untaxed Amount'),
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums", help="The amount without tax", track_visibility='false'),
-        'amount_tax': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string='Taxes',
+        'amount_tax': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Taxes'),
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums", help="The tax amount"),
-        'amount_total': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string='Total',
+        'amount_total': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Total'),
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums", help="The total amount"),
@@ -194,6 +194,8 @@ class purchase_order_line(osv.osv):
         return res
 
     _columns = {
+        'name': fields.text(_('Description'), required=True),
+        'product_id': fields.many2one('product.product', _('Product'), domain=[('purchase_ok','=',True)], change_default=True),
         'variation': fields.text(_('Variation')),
         'advice': fields.text(_('Comments')),
         'product_qty_original': fields.float(_('Quantity (Original)'), digits_compute=dp.get_precision('Product Unit of Measure')),
@@ -201,7 +203,7 @@ class purchase_order_line(osv.osv):
         'postage_original': fields.float(_('Postage (Original)'), digits_compute= dp.get_precision('Product Price')),
         'price_subtotal_original': fields.function(_amount_line_original, string=_('Subtotal (Original)'), digits_compute= dp.get_precision('Account')),
         'postage': fields.float(_('Postage'), digits_compute=dp.get_precision('Product Price')),
-        'price_subtotal': fields.function(_amount_line_postage, string='Subtotal', digits_compute= dp.get_precision('Account')),
+        'price_subtotal': fields.function(_amount_line_postage, string=_('Subtotal'), digits_compute= dp.get_precision('Account')),
     }
     _defaults = {
         'product_qty_original': lambda *a: 1.0,

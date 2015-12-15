@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-08 09:30+0000\n"
-"PO-Revision-Date: 2015-12-08 09:30+0000\n"
+"POT-Creation-Date: 2015-12-15 10:23+0000\n"
+"PO-Revision-Date: 2015-12-15 10:23+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,30 +16,31 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: purchase_line_original_postage
-#: view:purchase.order:purchase_line_original_postage.purchase__order_form_original
-msgid "(update)"
-msgstr "(更新)"
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:95
+#: view:website:account.report_invoice_document
+#, python-format
+msgid "Amount"
+msgstr "小計"
 
 #. module: purchase_line_original_postage
 #: code:addons/purchase_line_original_postage/models/account_invoice.py:91
 #: view:website:account.report_invoice_document
 #, python-format
-msgid "Amount"
-msgstr "金額"
-
-#. module: purchase_line_original_postage
-#: field:account.invoice.line,price_subtotal_original:0
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:87
-#: view:website:account.report_invoice_document
-#, python-format
 msgid "Amount (Original)"
-msgstr "金額(交渉前)"
+msgstr "小計(交渉前)"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/purchase.py:182
+#: code:addons/purchase_line_original_postage/models/purchase.py:200
 #, python-format
 msgid "Comments"
 msgstr "コメント"
+
+#. module: purchase_line_original_postage
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:81
+#: code:addons/purchase_line_original_postage/models/purchase.py:197
+#, python-format
+msgid "Description"
+msgstr "仕入先"
 
 #. module: purchase_line_original_postage
 #: view:website:account.report_invoice_document
@@ -57,28 +58,34 @@ msgid "Invoice Line"
 msgstr "請求書行"
 
 #. module: purchase_line_original_postage
-#: field:account.invoice.line,negotiate_fee:0
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:94
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:98
 #: view:website:account.report_invoice_document
 #, python-format
 msgid "Negotiation Fee"
 msgstr "交渉料"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:90
-#: code:addons/purchase_line_original_postage/models/purchase.py:187
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:94
+#: code:addons/purchase_line_original_postage/models/purchase.py:205
 #: view:website:account.report_invoice_document
 #, python-format
 msgid "Postage"
 msgstr "送料"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:86
-#: code:addons/purchase_line_original_postage/models/purchase.py:185
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:90
+#: code:addons/purchase_line_original_postage/models/purchase.py:203
 #: view:website:account.report_invoice_document
 #, python-format
 msgid "Postage (Original)"
 msgstr "送料(交渉前)"
+
+#. module: purchase_line_original_postage
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:82
+#: code:addons/purchase_line_original_postage/models/purchase.py:198
+#, python-format
+msgid "Product"
+msgstr "商品名"
 
 #. module: purchase_line_original_postage
 #: view:website:account.report_invoice_document
@@ -101,21 +108,29 @@ msgid "Quantity"
 msgstr "数量"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:84
-#: code:addons/purchase_line_original_postage/models/purchase.py:183
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:88
+#: code:addons/purchase_line_original_postage/models/purchase.py:201
 #: view:website:account.report_invoice_document
 #, python-format
 msgid "Quantity (Original)"
 msgstr "数量(交渉前)"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/purchase.py:186
+#: code:addons/purchase_line_original_postage/models/purchase.py:206
+#, python-format
+msgid "Subtotal"
+msgstr "小計"
+
+#. module: purchase_line_original_postage
+#: code:addons/purchase_line_original_postage/models/purchase.py:204
 #, python-format
 msgid "Subtotal (Original)"
 msgstr "小計(交渉前)"
 
 #. module: purchase_line_original_postage
-#: view:website:account.report_invoice_document
+#: view:account.invoice:purchase_line_original_postage.invoice_supplier_form_original
+#: code:addons/purchase_line_original_postage/models/purchase.py:84
+#, python-format
 msgid "Taxes"
 msgstr "税"
 
@@ -124,6 +139,12 @@ msgstr "税"
 #, python-format
 msgid "Taxes (Original)"
 msgstr "税(交渉前)"
+
+#. module: purchase_line_original_postage
+#: code:addons/purchase_line_original_postage/models/purchase.py:88
+#, python-format
+msgid "Total"
+msgstr "合計"
 
 #. module: purchase_line_original_postage
 #: code:addons/purchase_line_original_postage/models/purchase.py:100
@@ -137,77 +158,29 @@ msgid "Unit Price"
 msgstr "単価"
 
 #. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/account_invoice.py:81
-#: code:addons/purchase_line_original_postage/models/purchase.py:184
+#: code:addons/purchase_line_original_postage/models/account_invoice.py:85
+#: code:addons/purchase_line_original_postage/models/purchase.py:202
 #: view:website:account.report_invoice_document
 #, python-format
 msgid "Unit Price (Original)"
 msgstr "単価(交渉前)"
 
 #. module: purchase_line_original_postage
+#: code:addons/purchase_line_original_postage/models/purchase.py:80
+#, python-format
+msgid "Untaxed Amount"
+msgstr "小計"
+
+#. module: purchase_line_original_postage
 #: code:addons/purchase_line_original_postage/models/purchase.py:92
 #, python-format
 msgid "Untaxed Amount (Original)"
-msgstr "税抜金額(交渉前)"
-
-#. module: purchase_line_original_postage
-#: code:addons/purchase_line_original_postage/models/purchase.py:181
-#, python-format
-msgid "Variation"
-msgstr "バリエーション"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order.line,advice:0
-msgid "コメント"
-msgstr "コメント"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order.line,variation:0
-msgid "バリエーション"
-msgstr "バリエーション"
-
-#. module: purchase_line_original_postage
-#: field:account.invoice.line,price_unit_original:0
-#: field:purchase.order.line,price_unit_original:0
-msgid "単価(交渉前)"
-msgstr "単価(交渉前)"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order,amount_total_original:0
-msgid "合計(交渉前)"
-msgstr "合計(交渉前)"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order.line,price_subtotal_original:0
-msgid "小計(交渉前)"
 msgstr "小計(交渉前)"
 
 #. module: purchase_line_original_postage
-#: field:account.invoice.line,quantity_original:0
-#: field:purchase.order.line,product_qty_original:0
-msgid "数量(交渉前)"
-msgstr "数量(交渉前)"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order,amount_tax_original:0
-msgid "税(交渉前)"
-msgstr "税(交渉前)"
-
-#. module: purchase_line_original_postage
-#: field:purchase.order,amount_untaxed_original:0
-msgid "税抜金額(交渉前)"
-msgstr "税抜金額(交渉前)"
-
-#. module: purchase_line_original_postage
-#: field:account.invoice.line,postage:0
-#: field:purchase.order.line,postage:0
-msgid "送料"
-msgstr "送料"
-
-#. module: purchase_line_original_postage
-#: field:account.invoice.line,postage_original:0
-#: field:purchase.order.line,postage_original:0
-msgid "送料(交渉前)"
-msgstr "送料(交渉前)"
+#: code:addons/purchase_line_original_postage/models/purchase.py:199
+#, python-format
+msgid "Variation"
+msgstr "バリエーション"
 
 

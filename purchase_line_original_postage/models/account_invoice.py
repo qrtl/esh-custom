@@ -78,6 +78,10 @@ class account_invoice_line(models.Model):
         return total
 
 
+    name = fields.Text(string=_('Description'), required=True)
+    product_id = fields.Many2one('product.product', string=_('Product'),
+        ondelete='restrict', index=True)
+
     price_unit_original = fields.Float(string=_('Unit Price (Original)'), required=True,
         digits= dp.get_precision('Product Price'),
         default=_default_price_unit_original)

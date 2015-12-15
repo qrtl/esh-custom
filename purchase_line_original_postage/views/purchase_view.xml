@@ -6,30 +6,41 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+
             <xpath expr="//field[@name='product_id']" position="replace">
                 <field name="product_id" on_change="onchange_product_id_original(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,False,False,parent.state,context)"/>
             </xpath>
 
             <xpath expr="//tree[@string='Purchase Order Lines']/field[@name='name']" position="replace">
                 <field name="variation"/>
-                <field name="advice"/>
-                <field name="name" widget="url"/>
             </xpath>
 
-            <xpath expr="//field[@name='product_qty']" position="replace">
+            <xpath expr="//field[@name='date_planned']" position="replace">
+                <field name="date_planned" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_qty']" position="before">
             	<field name="product_qty_original"/>
                 <field name="price_unit_original"/>
                 <field name="postage_original"/>
                 <field name="price_subtotal_original"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_qty']" position="replace">
                 <field name="product_qty"/>
+            </xpath>
+
+            <xpath expr="//field[@name='price_unit']" position="after">
+                <field name="postage"/>
             </xpath>
 
             <xpath expr="//field[@name='taxes_id']" position="replace">
                 <field name="taxes_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','!=','sale')]" invisible="1"/>
             </xpath>
 
-            <xpath expr="//field[@name='price_unit']" position="after">
-                <field name="postage"/>
+            <xpath expr="//field[@name='price_subtotal']" position="after">
+                <field name="advice"/>
+                <field name="name" widget="url"/>
             </xpath>
 
             <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="before">
