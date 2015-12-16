@@ -77,7 +77,7 @@ class purchase_order(osv.osv):
         return result.keys()
 
     _columns = {
-        'amount_untaxed': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Untaxed Amount'),
+        'amount_untaxed': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Subtotal Amount'),
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums", help="The amount without tax", track_visibility='false'),
@@ -89,7 +89,7 @@ class purchase_order(osv.osv):
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums", help="The total amount"),
-        'amount_untaxed_original': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Untaxed Amount (Original)'),
+        'amount_untaxed_original': fields.function(_amount_all_original, digits_compute=dp.get_precision('Account'), string=_('Subtotal Amount (Original)'),
             store={
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums"),
@@ -194,8 +194,8 @@ class purchase_order_line(osv.osv):
         return res
 
     _columns = {
-        'name': fields.text(_('Description'), required=True),
-        'product_id': fields.many2one('product.product', _('Product'), domain=[('purchase_ok','=',True)], change_default=True),
+        'name': fields.text(_('Supplier URL'), required=True),
+        'product_id': fields.many2one('product.product', _('Product Name'), domain=[('purchase_ok','=',True)], change_default=True),
         'variation': fields.text(_('Variation')),
         'advice': fields.text(_('Comments')),
         'product_qty_original': fields.float(_('Quantity (Original)'), digits_compute=dp.get_precision('Product Unit of Measure')),
