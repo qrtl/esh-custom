@@ -4,22 +4,24 @@
 <template id="report_invoice_document_original" inherit_id="account.report_invoice_document">
         <xpath expr="//div[@class='page']/table[@class='table table-condensed']/thead/tr" position="replace">
         <tr>
+            <th>Product Number</th>
             <th>Product Name</th>
             <th>Quantity (Original)</th>
             <th class="text-right">Unit Price (Original)</th>
             <th class="text-right">Postage (Original)</th>
-            <th class="text-right">Subtotal Amount (Original)</th>
+            <th class="text-right">Subtotal (Original)</th>
             <th>Quantity</th>
             <th class="text-right">Unit Price</th>
             <th class="text-right">Postage</th>
             <th class="text-right" groups="sale.group_discount_per_so_line">Discount (%)</th>
+            <th class="text-right">Subtotal</th>
             <th class="text-right">Negotiation Fee</th>
-            <th class="text-right">Subtotal Amount</th>
         </tr>
         </xpath>
         <xpath expr="//div[@class='page']/table[@class='table table-condensed']/tbody[@class='invoice_tbody']/tr[@t-foreach='o.invoice_line']" position="replace">
         <tr t-foreach="o.invoice_line" t-as="l">
-            <td><span t-field="l.product_id"/></td>
+            <td><span t-field="l.product_id.default_code"/></td>
+            <td><span t-field="l.product_id.name"/></td>
             <td>
                  <span t-field="l.quantity_original"/>
                  <span t-field="l.uos_id"  groups="product.group_uom"/>
@@ -46,11 +48,11 @@
             </td>
             <td class="text-right" groups="sale.group_discount_per_so_line"><span t-field="l.discount"/></td>
             <td class="text-right">
-                 <span t-field="l.negotiate_fee"/>
-            </td>
-            <td class="text-right">
                  <span t-field="l.price_subtotal" 
                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+            </td>
+            <td class="text-right">
+                 <span t-field="l.negotiate_fee"/>
             </td>
         </tr>
         </xpath>

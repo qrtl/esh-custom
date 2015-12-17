@@ -78,21 +78,17 @@ class account_invoice_line(models.Model):
         return total
 
 
-    name = fields.Text(string=_('Supplier URL'), required=True)
-    product_id = fields.Many2one('product.product', string=_('Product Name'),
-        ondelete='restrict', index=True)
-
     price_unit_original = fields.Float(string=_('Unit Price (Original)'), required=True,
         digits= dp.get_precision('Product Price'),
         default=_default_price_unit_original)
     quantity_original = fields.Float(string=_('Quantity (Original)'), digits= dp.get_precision('Product Unit of Measure'),
         required=True, default=1)
     postage_original = fields.Float(string=_('Postage (Original)'), digits= dp.get_precision('Product Price'))
-    price_subtotal_original = fields.Float(string=_('Subtotal Amount (Original)'), digits= dp.get_precision('Account'),
+    price_subtotal_original = fields.Float(string=_('Subtotal (Original)'), digits= dp.get_precision('Account'),
         store=True, readonly=True, compute='_compute_price_original')
 
     postage = fields.Float(string=_('Postage'), digits= dp.get_precision('Product Price'))
-    price_subtotal = fields.Float(string=_('Subtotal Amount'), digits= dp.get_precision('Account'),
+    price_subtotal = fields.Float(string=_('Subtotal'), digits= dp.get_precision('Account'),
         store=True, readonly=True, compute='_compute_price_postage')
 
     negotiate_fee = fields.Float(string=_('Negotiation Fee'), digits= dp.get_precision('Account'),

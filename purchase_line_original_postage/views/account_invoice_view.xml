@@ -25,8 +25,8 @@
                     <field name="discount" groups="sale.group_discount_per_so_line"/>
                     <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
                         domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]" invisible="1"/>
-                    <field name="negotiate_fee"/>
                     <field name="price_subtotal"/>
+                    <field name="negotiate_fee"/>
                     <field name="name" widget="url"/>
                     <field name="account_id" groups="account.group_account_user"
                         domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"

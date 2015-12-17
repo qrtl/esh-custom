@@ -28,9 +28,11 @@
     'description': """
 * Adds Original fields of Unit Price, Quantity, Postage and Subtotal in Purchase Order and Invoice Lines
 * Adds Postage fields in Purchase Order and Invoice Lines
-* Adds a Negotiation Fee field in Invoice Line
-* Adds above columns in the report of Invoice
+* Adds Negotiation Fee field in Invoice Line
 * Adds Variation and Comments fields in Purchase Order Lines
+* Hides Expected Date in Purchase Order Lines
+* Hides Taxes in Purchase Order and Invoice Lines
+* Adds and hides above columns in the report of Invoice
     """,
     'depends': ["purchase", "account"], 
     'data': [
