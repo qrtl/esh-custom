@@ -31,7 +31,7 @@
     'depends': ["stock"], 
     'data': [
         'views/stock_view.xml',
-	    'views/report_stockpicking.xml',
+        'views/report_stockpicking.xml',
     ],
     'installable': True,
     'application': False,

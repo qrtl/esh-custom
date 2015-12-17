@@ -55,7 +55,7 @@ class stock_quant(osv.osv):
             'lot_id': lot_id,
             'owner_id': owner_id,
             'package_id': dest_package_id,
-            'amazon_fnsku':move.amazon_fnsku,
+            'amazon_fnsku': move.amazon_fnsku,
         }
 
         if move.location_id.usage == 'internal':
@@ -99,7 +99,9 @@ class stock_picking(osv.osv):
         product_uom = {} # Determines UoM used in pack operations
         location_dest_id = None
         location_id = None
+        productdict1 = {}
         for move in [x for x in picking.move_lines if x.state not in ('done', 'cancel')]:
+            productdict1[move.product_id.id] = move.amazon_fnsku
             if not product_uom.get(move.product_id.id):
                 product_uom[move.product_id.id] = move.product_id.uom_id
             if move.product_uom.id != move.product_id.uom_id.id and move.product_uom.factor > product_uom[move.product_id.id].factor:
@@ -145,7 +147,7 @@ class stock_picking(osv.osv):
 
         # Go through all remaining reserved quants and group by product, package, lot, owner, source location and dest location
         for quant, dest_location_id in quants_suggested_locations.items():
-            key = (quant.product_id.id, quant.package_id.id, quant.lot_id.id, quant.owner_id.id, quant.location_id.id, dest_location_id,quant.amazon_fnsku)
+            key = (quant.product_id.id, quant.package_id.id, quant.lot_id.id, quant.owner_id.id, quant.location_id.id, dest_location_id, quant.amazon_fnsku)
             if qtys_grouped.get(key):
                 qtys_grouped[key] += quant.qty
             else:
@@ -156,7 +158,7 @@ class stock_picking(osv.osv):
             if qty <= 0:
                 continue
             suggested_location_id = _picking_putaway_apply(product)
-            key = (product.id, False, False, picking.owner_id.id, picking.location_id.id, suggested_location_id,False)
+            key = (product.id, False, False, picking.owner_id.id, picking.location_id.id, suggested_location_id, False)
             if qtys_grouped.get(key):
                 qtys_grouped[key] += qty
             else:
@@ -172,6 +174,10 @@ class stock_picking(osv.osv):
             if product_uom.get(key[0]):
                 uom_id = product_uom[key[0]].id
                 qty_uom = uom_obj._compute_qty(cr, uid, product.uom_id.id, qty, uom_id)
+            if not key[6]:
+                fnsku = productdict1[key[0]]
+            else:
+                fnsku = key[6]
             val_dict = {
                 'picking_id': picking.id,
                 'product_qty': qty_uom,
@@ -182,7 +188,7 @@ class stock_picking(osv.osv):
                 'location_id': key[4],
                 'location_dest_id': key[5],
                 'product_uom_id': uom_id,
-                'amazon_fnsku':key[6],
+                'amazon_fnsku': fnsku,
             }
             if key[0] in prevals:
                 prevals[key[0]].append(val_dict)
