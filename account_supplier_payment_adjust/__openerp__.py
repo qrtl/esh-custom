@@ -17,18 +17,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 {
-    'name': 'Account Voucher Adjustment for EarthShip',
+    'name': 'Account Supplier Payments Adjust',
     'version': '8.0.0.5',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['account_voucher', 'legroup_purchase_warehouse'],
+    'depends': ['account_voucher',],
     'website': 'https://www.odoo-asia.com',
     'summary':"""""",
     'description': """ 
-Adjust Screen of Account Voucher
+Adjust Screen of Supplier Payments
     """,
     'data': [
             'views/voucher_payment_receipt_view.xml',
-             ],
+    ],
     'installable': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -11,14 +11,16 @@
                 <field name="date_due" readonly="1" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='line_dr_ids']/tree/field[@name='amount_original']" position="replace">
-                <field name="amount_original" readonly="1" group="legroup_purchase_warehouse.group_user_leadexpress"/>
+                <field name="amount_currency" readonly="1"/>
+                <field name="amount_original" readonly="1" groups="account.group_account_invoice"/>
             </xpath>
 
             <xpath expr="//field[@name='line_cr_ids']/tree/field[@name='date_due']" position="replace">
                 <field name="date_due" readonly="1" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='line_cr_ids']/tree/field[@name='amount_original']" position="replace">
-                <field name="amount_original" readonly="1" group="legroup_purchase_warehouse.group_user_leadexpress"/>
+                <field name="amount_currency" readonly="1"/>
+                <field name="amount_original" readonly="1" groups="account.group_account_invoice"/>
             </xpath>
 
             <xpath expr="//field[@name='payment_rate']" position="replace">

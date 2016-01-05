@@ -26,6 +26,12 @@ class account_voucher(osv.osv):
         currency_help_label = _('You can see the exchange rate by clicking the above link.')
         return currency_help_label
 
+class account_voucher_line(osv.osv):
+    _inherit = "account.voucher.line"
+
+    _columns = {
+        'amount_currency': fields.related('move_line_id', 'amount_currency', type='float', relation='account.move.line', string='Amount Currency', readonly=1)
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
