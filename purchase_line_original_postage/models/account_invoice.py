@@ -52,9 +52,10 @@ class account_invoice_line(models.Model):
     @api.depends('price_unit', 'price_unit_original', 'invoice_line_tax_id', 'quantity',
         'product_id', 'invoice_id.partner_id', 'invoice_id.currency_id', 'postage', 'postage_original')
     def _compute_negotiate_fee(self):
-        price = (self.price_unit_original - self.price_unit) + (self.postage_original - self.postage)
+        price = (self.price_unit_original - self.price_unit) 
+        price_post = (self.postage_original - self.postage)
         taxes = self.invoice_line_tax_id.compute_all(price, self.quantity, product=self.product_id, partner=self.invoice_id.partner_id)
-        self.negotiate_fee = taxes['total'] * 0.1
+        self.negotiate_fee = (taxes['total'] + price_post) * 0.1
         if self.invoice_id:
             self.negotiate_fee = self.invoice_id.currency_id.round(self.negotiate_fee)
 
