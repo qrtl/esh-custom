@@ -20,7 +20,7 @@
     'category': 'Sales Management',
     'version': '8.0.1.0',
     'author': 'Rooms For (Hong Kong) T/A OSCG',
-    'depends': ['sale_stock', 'base_import_log', 'account_voucher'],
+    'depends': ['sale_stock', 'base_import_log', 'account_voucher','sale_management'],
     'website': 'www.openerp-asia.net',
     'description': """ 
 Imports sales data and processes the following:
